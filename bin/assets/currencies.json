@@ -1,0 +1,67 @@
+{
+	"currencies": [
+		{
+			"id": "USD",
+			"name": "US Dollar",
+			"locale": "en_US",
+			"valueInUSD": 1.0,
+			"iconPath": "currency_icon/USD.png"
+		},
+		{
+			"id": "GBP",
+			"name": "Great British Pound",
+			"locale": "en_GB",
+			"valueInUSD": 1.23927,
+			"iconPath": "currency_icon/GBP.png"
+		},
+		{
+			"id": "EUR",
+			"name": "Euro",
+			"locale": "de_DE",
+			"valueInUSD": 1.07083,
+			"iconPath": "currency_icon/EUR.png"
+		},
+		{
+			"id": "AUD",
+			"name": "Australian Dollar",
+			"locale": "en_AU",
+			"valueInUSD": 0.75469,
+			"iconPath": "currency_icon/AUD.png"
+		},
+		{
+			"id": "CAD",
+			"name": "Canadian Dollar",
+			"locale": "en_CA",
+			"valueInUSD": 0.76617,
+			"iconPath": "currency_icon/CAD.png"
+		},
+		{
+			"id": "JPY",
+			"name": "Japanese Yen",
+			"locale": "ja_JP",
+			"valueInUSD": 0.00886,
+			"iconPath": "currency_icon/JPY.png"
+		},
+		{
+			"id": "CNY",
+			"name": "Chinese Yuan",
+			"locale": "zh_CN",
+			"valueInUSD": 0.14585,
+			"iconPath": "currency_icon/JPY.png"
+		},
+		{
+			"id": "KRW",
+			"name": "South Korean Won",
+			"locale": "ko_KR",
+			"valueInUSD": 0.00086,
+			"iconPath": "currency_icon/KRW.png"
+		},
+		{
+			"id": "XBT",
+			"name": "Bitcoin",
+			"locale": "en_US",
+			"valueInUSD": 1001.76,
+			"iconPath": "currency_icon/XBT.png"
+		}
+	]
+}

@@ -1,0 +1,104 @@
+Currency Converter Changelog
+© George Howarth 2017
+============================================
+
+Version 1.0.1 (05-Jul-17)
+--------------------------------------------
+- Tweaked layout of currency manager
+- Cleaned up log when currencies are updating
+- Fixed currency details panel not updating after initial currency update
+
+
+Version 1.0.0 (04-Jul-17)
+--------------------------------------------
+- * experimental * Added the ability to dynamically add currencies with a JSON file
+- * experimental * Added Currency Manager UI to edit currencies
+- Huge overhaul to UI
+- Added menu bar
+- Added Bitcoin
+- Currencies now automatically update when the application is started
+
+
+Version 0.5.3-alpha (06-Feb-17)
+--------------------------------------------
+- Tweaked UI on MacOS
+- Bug fixes for MacOS
+- Temporarily suspended support for font size alterations on MacOS
+
+
+Version 0.5.2-alpha (06-Feb-17)
+--------------------------------------------
+- Tweaked UI on MacOS
+- Fixed some currencies not displaying their symbol
+- Temporarily allowed resizing in 'About' dialog
+- Began work on framework to allow custom currencies
+
+
+Version 0.5.1-alpha (05-Feb-17)
+--------------------------------------------
+- Font size setting now works in 'Options' Dialog and Currency Updater
+- Tweaked positioning of font size controls in 'Options' dialog
+- Tweaked font sizes
+- Tweaked some dialog sizes
+- You can now only open one Currency Updater at a time to prevent errors
+
+
+Version 0.5.0-alpha (04-Feb-17)
+--------------------------------------------
+- Added dynamic version numbering
+- Improved font handling
+- Fixed only one 'About' dialog updating on font size change
+
+
+Version 0.4.1-alpha (01-Feb-17)
+--------------------------------------------
+- Added more information to currency updater
+- Improved performance by using multiple threads
+- Fixed crash if no connection
+
+
+Version 0.4.0-alpha (28-Jan-17)
+--------------------------------------------
+- Added ability to update currencies from internet
+
+
+Version 0.3.2-alpha (20-Jan-17)
+--------------------------------------------
+- Added 'About' dialog
+- Added currency support for South Korean Won (KRW)
+- Currency Converter now sets default currency based on your location
+- Tweaked positioning of conversion controls
+- Fixed positioning of font size slider in 'Options' dialog
+
+
+Version 0.3.1-alpha (Unknown)
+--------------------------------------------
+- Added icons for each currency
+
+
+Version 0.3.0-alpha (Unknown)
+--------------------------------------------
+- Added a currency details panel, showing currency name and value
+- Tweaked main menu layout
+
+
+Version 0.2.1-alpha (Unknown)
+--------------------------------------------
+- Added an option to change font size with a slider
+- Reorganised layout of 'Options' dialog
+
+
+Version 0.2.0-alpha (Unknown)
+--------------------------------------------
+- Added 'Options' dialog
+- Add options to use alternative local formatting
+
+
+Version 0.1.1-alpha (08-Jan-17)
+--------------------------------------------
+- Added more currencies
+
+
+Version 0.1.0-alpha (07-Jan-17)
+--------------------------------------------
+- Created Currency Converter
