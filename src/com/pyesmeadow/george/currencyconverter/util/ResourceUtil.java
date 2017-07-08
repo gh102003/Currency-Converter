@@ -6,16 +6,13 @@ import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
-import com.pyesmeadow.george.currencyconverter.currency.Currency;
-import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyManager;
-import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 
 /** Utility class for resources */
 public class ResourceUtil {
@@ -147,49 +144,23 @@ public class ResourceUtil {
 		writer.close();
 	}
 
-	public static File getCurrencyList(boolean createIfNecessary) throws Exception
+	public static File getCurrencyList() throws FileNotFoundException
 	{
 		File appdataDirectory = ResourceUtil.getAppdataDirectory();
 
 		File fileAppdataCurrencyList = new File(appdataDirectory.getAbsolutePath() + "/currencies.json");
 
 		// Check that the file exists
-		if (!appdataDirectory.exists() && createIfNecessary)
+		if (!appdataDirectory.exists())
 		{
 			appdataDirectory.mkdirs();
 		}
 
 		// If the file doesn't exist, create it and set it to have the
 		// default currency list
-		if (!fileAppdataCurrencyList.exists() && createIfNecessary)
+		if (!fileAppdataCurrencyList.exists())
 		{
-			fileAppdataCurrencyList.createNewFile();
-			
-			CurrencyManager currencyManager = CurrencyConverter.currencyConverterFrame.currencyManager;
-			
-			currencyManager.addCurrency(new Currency("USD", "US Dollar", Currency.getLocaleFromLocaleString("en_US"), 1, "currency_icon/USD.png"));
-			currencyManager.addCurrency(new Currency("GBP", "Great British Pound", Currency.getLocaleFromLocaleString("en_GB"), 1.23927, "currency_icon/GBP.png"));
-			currencyManager.addCurrency(new Currency("EUR", "Euro", Currency.getLocaleFromLocaleString("de_DE"), 1.07083, "currency_icon/EUR.png"));
-			currencyManager.addCurrency(new Currency("AUD", "Australian Dollar", Currency.getLocaleFromLocaleString("en_AU"), 0.75469, "currency_icon/AUD.png"));
-			currencyManager.addCurrency(new Currency("CAD", "Canadian Dollar", Currency.getLocaleFromLocaleString("en_CA"), 0.76617, "currency_icon/CAD.png"));
-			currencyManager.addCurrency(new Currency("JPY", "Japanese Yen", Currency.getLocaleFromLocaleString("ja_JP"), 0.00886, "currency_icon/JPY.png"));
-			currencyManager.addCurrency(new Currency("CNY", "Chinese Yuan", Currency.getLocaleFromLocaleString("zh_CN"), 0.14585, "currency_icon/CNY.png"));
-			currencyManager.addCurrency(new Currency("KRW", "South Korean Won", Currency.getLocaleFromLocaleString("ko_KR"), 0.00086, "currency_icon/KRW.png"));
-			currencyManager.addCurrency(new Currency("XBT", "Bitcoin", Currency.getLocaleFromLocaleString("en_US"), 1001.76, "currency_icon/XBT.png"));
-			
-			currencyManager.getCurrencyList().writeCurrencies();
-			
-			/*fileAppdataCurrencyList.createNewFile();
-
-			File fileDefaultCurrencyList = new File(
-					ResourceUtil.class.getClassLoader().getResource("assets/currencies.json").toURI().getPath());
-
-			System.out.println("Copying: " + fileDefaultCurrencyList + "\n To: " + fileAppdataCurrencyList);
-
-			FileReader reader = new FileReader(fileDefaultCurrencyList);
-			FileWriter writer = new FileWriter(fileAppdataCurrencyList);
-
-			ResourceUtil.copyFile(reader, writer);*/
+			throw new FileNotFoundException();
 		}
 
 		return fileAppdataCurrencyList;
