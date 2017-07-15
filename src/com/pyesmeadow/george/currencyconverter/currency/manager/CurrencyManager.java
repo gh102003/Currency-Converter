@@ -13,7 +13,7 @@ public class CurrencyManager {
 	{
 		this.currencyList = new CurrencyList();
 
-		loadCurrencies();
+		loadCurrencyDetailsPanels();
 	}
 
 	/**
@@ -23,10 +23,10 @@ public class CurrencyManager {
 	{
 		this.currencyList.addCurrency(currency);
 
-		if(this.currencyManagerDialog != null)
+		if (this.currencyManagerDialog != null)
 			this.currencyManagerDialog.updateDisplay();
 
-		this.loadCurrencies();
+		this.loadCurrencyDetailsPanels();
 	}
 
 	/**
@@ -36,14 +36,14 @@ public class CurrencyManager {
 	{
 		boolean toReturn = this.currencyList.removeCurrency(currency);
 
-		if(this.currencyManagerDialog != null)
+		if (this.currencyManagerDialog != null)
 			this.currencyManagerDialog.updateDisplay();
 
-		this.loadCurrencies();
+		this.loadCurrencyDetailsPanels();
 
 		return toReturn;
 	}
-	
+
 	/**
 	 * @return if the currency existed previously
 	 */
@@ -51,21 +51,30 @@ public class CurrencyManager {
 	{
 		boolean toReturn = this.currencyList.editCurrency(oldCurrency, newCurrency);
 
-		if(this.currencyManagerDialog != null)
+		if (this.currencyManagerDialog != null)
 			this.currencyManagerDialog.updateDisplay();
 
-		this.loadCurrencies();
+		this.loadCurrencyDetailsPanels();
 
 		return toReturn;
 	}
 
-	private void loadCurrencies()
+	public void refreshFromJSON()
+	{
+		this.currencyList.refreshFromJSON();
+		
+		this.loadCurrencyDetailsPanels();
+	}
+
+	private void loadCurrencyDetailsPanels()
 	{
 		// Setup the frame to use the currencies
 		CurrencyConverterFrame frame = CurrencyConverter.currencyConverterFrame;
 
-		if(frame != null)
+		if (frame != null)
+		{
 			frame.refreshCurrencies();
+		}
 	}
 
 	public CurrencyList getCurrencyList()
@@ -75,7 +84,7 @@ public class CurrencyManager {
 
 	public boolean openManagementDialog()
 	{
-		if(this.currencyManagerDialog == null || !this.currencyManagerDialog.isVisible())
+		if (this.currencyManagerDialog == null || !this.currencyManagerDialog.isVisible())
 		{
 			this.currencyManagerDialog = new CurrencyManagerDialog(this);
 			return true;

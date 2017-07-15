@@ -46,7 +46,8 @@ public class CurrencyManagerDialog extends JDialog {
 	// Navigation panel
 	private JPanel panelNavigation = new JPanel(new GridBagLayout());
 	private JButton btnAddCurrency = new JButton(new ImageIcon(addIcon));
-	private JButton btnReset = new JButton("Reset currencies");
+	private JButton btnRefresh = new JButton("Refresh");
+	private JButton btnReset = new JButton("Reset");
 	private JButton btnClose = new JButton("Close");
 
 	public CurrencyManagerDialog(CurrencyManager currencyManager)
@@ -66,7 +67,7 @@ public class CurrencyManagerDialog extends JDialog {
 		c.weightx = 1.0;
 		c.insets = new Insets(5, 5, 5, 5);
 
-		for(Currency currency : this.currencyManager.getCurrencyList().getCurrencies())
+		for (Currency currency : this.currencyManager.getCurrencyList().getCurrencies())
 		{
 			CurrencyManagerEntry panel = new CurrencyManagerEntry(currency);
 
@@ -83,6 +84,7 @@ public class CurrencyManagerDialog extends JDialog {
 
 		panelNavigation.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		panelNavigation.add(btnAddCurrency, c);
+		panelNavigation.add(btnRefresh, c);
 		panelNavigation.add(btnReset, c);
 		panelNavigation.add(btnClose, c);
 
@@ -118,16 +120,19 @@ public class CurrencyManagerDialog extends JDialog {
 		this.btnAddCurrency.addActionListener(e -> {
 
 			Currency c = DialogAddCurrency.showDialog();
+
+			if (c != null)
+				this.currencyManager.addCurrency(c);
+
+		});
+
+		this.btnRefresh.addActionListener(e -> {
 			
-			if(c != null) CurrencyConverter.currencyConverterFrame.currencyManager.addCurrency(c);
-
+			this.currencyManager.refreshFromJSON();
+			
 		});
 
-		this.btnClose.addActionListener(e -> {
-
-			dispose();
-
-		});
+		this.btnClose.addActionListener(e -> dispose());
 	}
 
 	public void updateDisplay()
@@ -141,7 +146,7 @@ public class CurrencyManagerDialog extends JDialog {
 		c.weightx = 1.0;
 		c.insets = new Insets(5, 5, 5, 5);
 
-		for(Currency currency : this.currencyManager.getCurrencyList().getCurrencies())
+		for (Currency currency : this.currencyManager.getCurrencyList().getCurrencies())
 		{
 			CurrencyManagerEntry panel = new CurrencyManagerEntry(currency);
 
@@ -157,6 +162,7 @@ public class CurrencyManagerDialog extends JDialog {
 	protected void registerComponentFontVariations()
 	{
 		FontUtil.registerComponentFontVariation(btnAddCurrency, FontVariation.SMALL_PLAIN);
+		FontUtil.registerComponentFontVariation(btnRefresh, FontVariation.SMALL_PLAIN);
 		FontUtil.registerComponentFontVariation(btnReset, FontVariation.SMALL_PLAIN);
 		FontUtil.registerComponentFontVariation(btnClose, FontVariation.SMALL_PLAIN);
 	}
