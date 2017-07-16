@@ -141,7 +141,7 @@ public class CurrencyManagerDialog extends JDialog {
 		this.btnClose.addActionListener(e -> dispose());
 	}
 
-	public void updateDisplay()
+	public void updateDisplayedCurrencies()
 	{
 		panelCurrencies.removeAll();
 

@@ -2,9 +2,15 @@ Currency Converter Changelog
 © George Howarth 2017
 ============================================
 
+Version 1.1 (16-Jul-17)
+--------------------------------------------
+- Added button to refresh from the currencies JSON
+- Added button to reset the currencies JSON to the default currencies
+- Added a program argument to disable the initial currency update added in version 1.0.0 (Run with "--disableInitialUpdate")
+
 Version 1.0.1 (05-Jul-17)
 --------------------------------------------
-- Tweaked layout of currency manager
+- Tweaked layout of Currency Manager
 - Cleaned up log when currencies are updating
 - Fixed currency details panel not updating after initial currency update
 
@@ -15,7 +21,7 @@ Version 1.0.0 (04-Jul-17)
 - * experimental * Added Currency Manager UI to edit currencies
 - Huge overhaul to UI
 - Added menu bar
-- Added Bitcoin
+- Added currency support for the Bitcoin (XBT)
 - Currencies now automatically update when the application is started
 
 
@@ -59,13 +65,13 @@ Version 0.4.1-alpha (01-Feb-17)
 
 Version 0.4.0-alpha (28-Jan-17)
 --------------------------------------------
-- Added ability to update currencies from internet
+- Added ability to update currencies from the internet
 
 
 Version 0.3.2-alpha (20-Jan-17)
 --------------------------------------------
 - Added 'About' dialog
-- Added currency support for South Korean Won (KRW)
+- Added currency support for the South Korean Won (KRW)
 - Currency Converter now sets default currency based on your location
 - Tweaked positioning of conversion controls
 - Fixed positioning of font size slider in 'Options' dialog
@@ -91,7 +97,7 @@ Version 0.2.1-alpha (Unknown)
 Version 0.2.0-alpha (Unknown)
 --------------------------------------------
 - Added 'Options' dialog
-- Add options to use alternative local formatting
+- Added options to use alternative local formatting
 
 
 Version 0.1.1-alpha (08-Jan-17)

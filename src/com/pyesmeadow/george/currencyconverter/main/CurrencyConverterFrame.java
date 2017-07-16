@@ -43,11 +43,11 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	private static final long serialVersionUID = 3584042683319202624L;
 
 	// Currency Manager
-		public CurrencyManager currencyManager = new CurrencyManager();
-	
+	public CurrencyManager currencyManager = new CurrencyManager();
+
 	// Menu bar
 	public CurrencyConverterMenuBar menuBar = new CurrencyConverterMenuBar(this);
-	
+
 	private static final Dimension DEFAULT_SIZE = new Dimension(600, 410);
 	private static final Dimension MINIMUM_SIZE = new Dimension(600, 410);
 	private static final Dimension COLLAPSED_MINIMUM_SIZE = new Dimension(600, 150);
@@ -69,13 +69,18 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	public AboutDialog aboutDialog;
 	public OptionsDialog optionsDialog;
 	public CurrencyUpdater currencyUpdater;
-	
-	public CurrencyConverterFrame()
+
+	public CurrencyConverterFrame(boolean shouldUpdateOnStart)
 	{
-		// Update currencies
-		this.currencyUpdater = new CurrencyUpdater(this.currencyManager, false);
-		Thread thread = new Thread(this.currencyUpdater, "Thread-CurrencyUpdater");
-		thread.start();
+		Thread thread = null;
+		
+		if (shouldUpdateOnStart)
+		{
+			// Update currencies
+			this.currencyUpdater = new CurrencyUpdater(this.currencyManager, false);
+			thread = new Thread(this.currencyUpdater, "Thread-CurrencyUpdater");
+			thread.start();
+		}
 		
 		// Setup main layout
 		setLayout(new GridBagLayout());
@@ -114,17 +119,19 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		panelMain.add(Box.createRigidArea(new Dimension(10, 0)));
 		panelMain.add(labelToCurrencyAmount);
 
-		// Wait for currencies to finish updating
-		try
+		if (shouldUpdateOnStart)
 		{
-			thread.join();
-		} catch(InterruptedException e)
-		{
-			e.printStackTrace();
+			// Wait for currencies to finish updating
+			try
+			{
+				thread.join();
+			} catch (InterruptedException e)
+			{
+				e.printStackTrace();
+			} 
 		}
-		
 		addCurrencies(currencyManager.getCurrencyList());
-		
+
 		panelCurrencyDetails.add(panelFromCurrency);
 		panelCurrencyDetails.add(panelToCurrency);
 
@@ -182,11 +189,11 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch(Exception e)
+		} catch (Exception e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		pack();
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -204,7 +211,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		try
 		{
 			amountFrom = Float.parseFloat(fieldFromCurrencyAmount.getText());
-		} catch(NullPointerException | NumberFormatException e)
+		} catch (NullPointerException | NumberFormatException e)
 		{
 			amountFrom = 0;
 		}
@@ -215,7 +222,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		Currency currencyTo = currencyList.getCurrencyFromIdentifier((String) comboToCurrency.getSelectedItem());
 
 		// Update the output label to the conversion
-		if(currencyTo != null && currencyFrom != null)
+		if (currencyTo != null && currencyFrom != null)
 		{
 			labelToCurrencyAmount.setText(currencyTo.getCurrencyFormatting()
 					.format(CurrencyConverter.convertCurrency(amountFrom, currencyFrom, currencyTo)));
@@ -233,7 +240,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		{
 			prevConversion = currencyManager.getCurrencyList().getCurrencyFromIdentifier(prevTo).getCurrencyFormatting()
 					.parse(labelToCurrencyAmount.getText()).doubleValue();
-		} catch(ParseException e)
+		} catch (ParseException e)
 		{
 			e.printStackTrace();
 		}
@@ -251,7 +258,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	public void registerComponentFontVariations()
 	{
 		// panelMain
-		if(!Util.isRunningOnMac())
+		if (!Util.isRunningOnMac())
 		{
 			FontUtil.registerComponentFontVariation(comboFromCurrency, FontVariation.LARGE_PLAIN);
 			FontUtil.registerComponentFontVariation(fieldFromCurrencyAmount, FontVariation.LARGE_PLAIN);
@@ -270,7 +277,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 	public void setCurrencyDetailsVisibility(boolean visible)
 	{
-		if(!visible)
+		if (!visible)
 		{
 			setMinimumSize(COLLAPSED_MINIMUM_SIZE);
 		} else
@@ -303,7 +310,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		ArrayList<Currency> currencies = currencyList.getCurrencies();
 
 		// Add choices to combo boxes
-		for(Currency currency : currencies)
+		for (Currency currency : currencies)
 		{
 			comboFromCurrency.addItem(currency.getIdentifier());
 			comboToCurrency.addItem(currency.getIdentifier());
@@ -312,12 +319,12 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		// Set default ComboBox items
 		Currency localCurrency = currencyManager.getCurrencyList().getCurrencyFromLocale(Locale.getDefault());
 
-		if(localCurrency != null)
+		if (localCurrency != null)
 		{
 			comboFromCurrency.setSelectedItem(localCurrency.getIdentifier());
 		}
 
-		if(comboFromCurrency.getSelectedItem() != null && comboFromCurrency.getSelectedItem().equals("USD"))
+		if (comboFromCurrency.getSelectedItem() != null && comboFromCurrency.getSelectedItem().equals("USD"))
 		{
 			comboToCurrency.setSelectedItem("EUR");
 		} else
@@ -338,7 +345,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		panelToCurrency.removeAll();
 
 		// Add panels
-		for(Currency currency : currencyManager.getCurrencyList().getCurrencies())
+		for (Currency currency : currencyManager.getCurrencyList().getCurrencies())
 		{
 			JPanel panel = new CurrencyDetailsPanel(currency);
 			panelFromCurrency.add(panel, currency.getIdentifier());
@@ -399,7 +406,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	@Override
 	public void itemStateChanged(ItemEvent e)
 	{
-		if(e.getStateChange() == ItemEvent.SELECTED)
+		if (e.getStateChange() == ItemEvent.SELECTED)
 		{
 			updateConversion();
 

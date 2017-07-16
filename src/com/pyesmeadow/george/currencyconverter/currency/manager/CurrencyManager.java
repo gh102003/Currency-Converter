@@ -24,7 +24,7 @@ public class CurrencyManager {
 		this.currencyList.addCurrency(currency);
 
 		if (this.currencyManagerDialog != null)
-			this.currencyManagerDialog.updateDisplay();
+			this.currencyManagerDialog.updateDisplayedCurrencies();
 
 		this.loadCurrencyDetailsPanels();
 	}
@@ -36,10 +36,7 @@ public class CurrencyManager {
 	{
 		boolean toReturn = this.currencyList.removeCurrency(currency);
 
-		if (this.currencyManagerDialog != null)
-			this.currencyManagerDialog.updateDisplay();
-
-		this.loadCurrencyDetailsPanels();
+		updateReferencesToCurrencies();
 
 		return toReturn;
 	}
@@ -51,10 +48,7 @@ public class CurrencyManager {
 	{
 		boolean toReturn = this.currencyList.editCurrency(oldCurrency, newCurrency);
 
-		if (this.currencyManagerDialog != null)
-			this.currencyManagerDialog.updateDisplay();
-
-		this.loadCurrencyDetailsPanels();
+		updateReferencesToCurrencies();
 
 		return toReturn;
 	}
@@ -62,12 +56,28 @@ public class CurrencyManager {
 	public void refreshFromJSON()
 	{
 		this.currencyList.refreshFromJSON();
-		
-		this.loadCurrencyDetailsPanels();
+
+		updateReferencesToCurrencies();
 	}
-	
-	public void resetCurrencies() {
+
+	public void resetCurrencies()
+	{
 		this.currencyList.resetCurrencies();
+
+		updateReferencesToCurrencies();
+	}
+
+	/**
+	 * 
+	 */
+	private void updateReferencesToCurrencies()
+	{
+		if (this.currencyManagerDialog != null)
+		{
+			this.currencyManagerDialog.updateDisplayedCurrencies();
+		}
+
+		this.loadCurrencyDetailsPanels();
 	}
 
 	private void loadCurrencyDetailsPanels()
