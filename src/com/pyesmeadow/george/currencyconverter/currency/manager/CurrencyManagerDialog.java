@@ -127,9 +127,15 @@ public class CurrencyManagerDialog extends JDialog {
 		});
 
 		this.btnRefresh.addActionListener(e -> {
-			
+
 			this.currencyManager.refreshFromJSON();
-			
+
+		});
+
+		this.btnReset.addActionListener(e -> {
+
+			this.currencyManager.resetCurrencies();
+
 		});
 
 		this.btnClose.addActionListener(e -> dispose());

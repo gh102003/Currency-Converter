@@ -65,6 +65,10 @@ public class CurrencyManager {
 		
 		this.loadCurrencyDetailsPanels();
 	}
+	
+	public void resetCurrencies() {
+		this.currencyList.resetCurrencies();
+	}
 
 	private void loadCurrencyDetailsPanels()
 	{

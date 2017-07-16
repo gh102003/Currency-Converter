@@ -98,6 +98,44 @@ public class CurrencyList {
 	}
 
 	/**
+	 * Resets currencies to their default value.
+	 */
+	public void resetCurrencies()
+	{
+		try
+		{
+			ArrayList<Currency> currencyList = new ArrayList<Currency>();
+
+			currencyList.add(new Currency("USD", "US Dollar", Currency.getLocaleFromLocaleString("en_US"), 1,
+					"currency_icon/USD.png"));
+			currencyList.add(new Currency("GBP", "Great British Pound", Currency.getLocaleFromLocaleString("en_GB"),
+					1.23927, "currency_icon/GBP.png"));
+			currencyList.add(new Currency("EUR", "Euro", Currency.getLocaleFromLocaleString("de_DE"), 1.07083,
+					"currency_icon/EUR.png"));
+			currencyList.add(new Currency("AUD", "Australian Dollar", Currency.getLocaleFromLocaleString("en_AU"),
+					0.75469, "currency_icon/AUD.png"));
+			currencyList.add(new Currency("CAD", "Canadian Dollar", Currency.getLocaleFromLocaleString("en_CA"),
+					0.76617, "currency_icon/CAD.png"));
+			currencyList.add(new Currency("JPY", "Japanese Yen", Currency.getLocaleFromLocaleString("ja_JP"), 0.00886,
+					"currency_icon/JPY.png"));
+			currencyList.add(new Currency("CNY", "Chinese Yuan", Currency.getLocaleFromLocaleString("zh_CN"), 0.14585,
+					"currency_icon/CNY.png"));
+			currencyList.add(new Currency("KRW", "South Korean Won", Currency.getLocaleFromLocaleString("ko_KR"),
+					0.00086, "currency_icon/KRW.png"));
+			currencyList.add(new Currency("XBT", "Bitcoin", Currency.getLocaleFromLocaleString("en_US"), 1001.76,
+					"currency_icon/XBT.png"));
+
+			CurrencyList.this.currencies = currencyList;
+
+			handler.writeCurrencies();
+
+		} catch (Exception e)
+		{
+
+		}
+	}
+
+	/**
 	 * Handles reading and writing from and to the Currency List JSON
 	 */
 	private class CurrencyListHandler {
@@ -106,7 +144,7 @@ public class CurrencyList {
 		 * Writes {@code currencies} to the currency list JSON
 		 */
 		@SuppressWarnings("unchecked")
-		public void writeCurrencies()
+		private void writeCurrencies()
 		{
 			JSONArray currencyListJSON = new JSONArray();
 
@@ -142,7 +180,7 @@ public class CurrencyList {
 		 * Reads the currency list JSON and sets {@code currencies} to the list
 		 * of currencies
 		 */
-		public void readCurrencies()
+		private void readCurrencies()
 		{
 			ArrayList<Currency> currencyList = new ArrayList<Currency>();
 
@@ -186,33 +224,8 @@ public class CurrencyList {
 				} catch (FileNotFoundException e)
 				{
 					String path = ResourceUtil.getAppdataDirectory().getAbsolutePath() + "/currencies.json";
-
-					System.out.println(path);
-					fileAppdataCurrencyList = new File(path);
-					fileAppdataCurrencyList.createNewFile();
-
-					currencyList.add(new Currency("USD", "US Dollar", Currency.getLocaleFromLocaleString("en_US"), 1,
-							"currency_icon/USD.png"));
-					currencyList.add(new Currency("GBP", "Great British Pound",
-							Currency.getLocaleFromLocaleString("en_GB"), 1.23927, "currency_icon/GBP.png"));
-					currencyList.add(new Currency("EUR", "Euro", Currency.getLocaleFromLocaleString("de_DE"), 1.07083,
-							"currency_icon/EUR.png"));
-					currencyList.add(new Currency("AUD", "Australian Dollar",
-							Currency.getLocaleFromLocaleString("en_AU"), 0.75469, "currency_icon/AUD.png"));
-					currencyList.add(new Currency("CAD", "Canadian Dollar", Currency.getLocaleFromLocaleString("en_CA"),
-							0.76617, "currency_icon/CAD.png"));
-					currencyList.add(new Currency("JPY", "Japanese Yen", Currency.getLocaleFromLocaleString("ja_JP"),
-							0.00886, "currency_icon/JPY.png"));
-					currencyList.add(new Currency("CNY", "Chinese Yuan", Currency.getLocaleFromLocaleString("zh_CN"),
-							0.14585, "currency_icon/CNY.png"));
-					currencyList.add(new Currency("KRW", "South Korean Won",
-							Currency.getLocaleFromLocaleString("ko_KR"), 0.00086, "currency_icon/KRW.png"));
-					currencyList.add(new Currency("XBT", "Bitcoin", Currency.getLocaleFromLocaleString("en_US"),
-							1001.76, "currency_icon/XBT.png"));
-
-					CurrencyList.this.currencies = currencyList;
-
-					writeCurrencies();
+					new File(path).createNewFile();
+					resetCurrencies();
 				}
 
 			} catch (Exception e)
@@ -220,6 +233,5 @@ public class CurrencyList {
 				e.printStackTrace();
 			}
 		}
-
 	}
 }
