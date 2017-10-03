@@ -10,7 +10,7 @@ import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontProfile;
  */
 public class CurrencyConverter {
 
-	public static CurrencyConverterFrame currencyConverterFrame;
+	public static CurrencyConverterFrame frame;
 
 	public static final String VERSION = "1.0.0";
 
@@ -27,8 +27,8 @@ public class CurrencyConverter {
 				shouldUpdateOnStart = false;
 			}
 		}
-		
-		currencyConverterFrame = new CurrencyConverterFrame(shouldUpdateOnStart);
+
+		frame = new CurrencyConverterFrame(shouldUpdateOnStart);
 	}
 
 	public static double convertCurrency(double amount, Currency currencyFrom, Currency currencyTo)
@@ -44,7 +44,7 @@ public class CurrencyConverter {
 
 	/**
 	 * Sets the font profile. Also updates components.
-	 * 
+	 *
 	 * @param fontProfile
 	 *            the profile to update to
 	 */

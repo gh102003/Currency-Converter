@@ -66,7 +66,7 @@ public class CurrencyList {
 		handler.readCurrencies();
 	}
 
-	public Currency getCurrencyFromIdentifier(String identifier)
+	public Currency getCurrencyFromID(String identifier)
 	{
 		for (Currency currency : this.currencies)
 		{
@@ -167,7 +167,7 @@ public class CurrencyList {
 
 			try (FileWriter writer = new FileWriter(ResourceUtil.getCurrencyList()))
 			{
-				writer.write(mainJSON.toJSONString());
+				mainJSON.writeJSONString(writer);
 				writer.flush();
 
 			} catch (Exception e)

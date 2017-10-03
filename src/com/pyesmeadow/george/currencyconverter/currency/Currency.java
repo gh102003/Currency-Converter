@@ -98,7 +98,7 @@ public class Currency {
 
 	/**
 	 * Used for writing to JSON
-	 * 
+	 *
 	 * @return a String that can be used as an {@code iconPath} to construct a
 	 *         {@code Currency}
 	 */
@@ -110,7 +110,7 @@ public class Currency {
 	/**
 	 * Locale strings should be in the format 'la_CO', with 'la' as the language
 	 * and 'CO' as the country.
-	 * 
+	 *
 	 * @param localeString
 	 * @return
 	 */

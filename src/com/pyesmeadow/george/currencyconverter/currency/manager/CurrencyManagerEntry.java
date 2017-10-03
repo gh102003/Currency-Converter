@@ -89,7 +89,7 @@ public class CurrencyManagerEntry extends JPanel {
 
 					if (c != null)
 					{
-						CurrencyConverter.currencyConverterFrame.currencyManager.editCurrency(CurrencyManagerEntry.this.currency, c);
+						CurrencyConverter.frame.currencyManager.editCurrency(CurrencyManagerEntry.this.currency, c);
 					}
 				}
 			}
@@ -124,7 +124,7 @@ public class CurrencyManagerEntry extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				CurrencyConverter.currencyConverterFrame.currencyManager.removeCurrency(CurrencyManagerEntry.this.currency);
+				CurrencyConverter.frame.currencyManager.removeCurrency(CurrencyManagerEntry.this.currency);
 			}
 		});
 	}
