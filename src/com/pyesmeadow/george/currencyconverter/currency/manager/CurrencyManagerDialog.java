@@ -161,8 +161,7 @@ public class CurrencyManagerDialog extends JDialog {
 
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 
-		this.panelCurrencies.revalidate();
-		this.scrollPaneCurrencies.revalidate();
+		this.scrollPaneCurrencies.validate();
 	}
 
 	protected void registerComponentFontVariations()
