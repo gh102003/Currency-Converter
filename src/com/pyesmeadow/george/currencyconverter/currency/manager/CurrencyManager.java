@@ -23,14 +23,13 @@ public class CurrencyManager {
 	{
 		this.currencyList.addCurrency(currency);
 
-		if (this.currencyManagerDialog != null)
-			this.currencyManagerDialog.updateDisplayedCurrencies();
+		updateReferencesToCurrencies();
 
 		this.loadCurrencyDetailsPanels();
 	}
 
 	/**
-	 * @return if the currency existed previously
+	 * @return true if the currency existed previously
 	 */
 	public boolean removeCurrency(Currency currency)
 	{
