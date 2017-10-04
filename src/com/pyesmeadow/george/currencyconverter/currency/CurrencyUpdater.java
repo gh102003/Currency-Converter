@@ -55,7 +55,7 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 		setSize(new Dimension(400, 300));
 		setResizable(false);
 		setTitle("Currency Updater");
-		setIconImages(CurrencyConverter.currencyConverterFrame.getIconImages());
+		setIconImages(CurrencyConverter.frame.getIconImages());
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}
@@ -97,10 +97,10 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 
 	/**
 	 * Updates a single currency from the internet. Handles all exceptions.
-	 * 
+	 *
 	 * @param currency
 	 *            currency to update
-	 * 
+	 *
 	 * @return true if update succesful, false if unsuccesful
 	 */
 	private boolean updateCurrency(Currency currency)

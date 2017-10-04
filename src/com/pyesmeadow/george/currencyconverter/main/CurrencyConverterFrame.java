@@ -73,7 +73,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	public CurrencyConverterFrame(boolean shouldUpdateOnStart)
 	{
 		Thread thread = null;
-		
+
 		if (shouldUpdateOnStart)
 		{
 			// Update currencies
@@ -81,7 +81,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 			thread = new Thread(this.currencyUpdater, "Thread-CurrencyUpdater");
 			thread.start();
 		}
-		
+
 		// Setup main layout
 		setLayout(new GridBagLayout());
 
@@ -128,7 +128,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 			} catch (InterruptedException e)
 			{
 				e.printStackTrace();
-			} 
+			}
 		}
 		addCurrencies(currencyManager.getCurrencyList());
 
@@ -218,8 +218,8 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 		CurrencyList currencyList = this.currencyManager.getCurrencyList();
 
-		Currency currencyFrom = currencyList.getCurrencyFromIdentifier((String) comboFromCurrency.getSelectedItem());
-		Currency currencyTo = currencyList.getCurrencyFromIdentifier((String) comboToCurrency.getSelectedItem());
+		Currency currencyFrom = currencyList.getCurrencyFromID((String) comboFromCurrency.getSelectedItem());
+		Currency currencyTo = currencyList.getCurrencyFromID((String) comboToCurrency.getSelectedItem());
 
 		// Update the output label to the conversion
 		if (currencyTo != null && currencyFrom != null)
@@ -238,14 +238,14 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 		try
 		{
-			prevConversion = currencyManager.getCurrencyList().getCurrencyFromIdentifier(prevTo).getCurrencyFormatting()
-					.parse(labelToCurrencyAmount.getText()).doubleValue();
+			prevConversion = currencyManager.getCurrencyList().getCurrencyFromID(prevTo).getCurrencyFormatting()
+											.parse(labelToCurrencyAmount.getText()).doubleValue();
 		} catch (ParseException e)
 		{
 			e.printStackTrace();
 		}
 
-		// Swap amounts 
+		// Swap amounts
 		comboFromCurrency.setSelectedItem(comboToCurrency.getSelectedItem());
 		comboToCurrency.setSelectedItem(prevFrom);
 

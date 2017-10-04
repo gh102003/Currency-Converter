@@ -114,8 +114,8 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 			frame.currencyUpdater = new CurrencyUpdater(frame.currencyManager, true);
 			Thread thread = new Thread(frame.currencyUpdater, "Thread-CurrencyUpdater");
 			thread.start();
-			
-			CurrencyConverter.currencyConverterFrame.refreshCurrencies();
+
+			CurrencyConverter.frame.refreshCurrencies();
 
 		});
 	}

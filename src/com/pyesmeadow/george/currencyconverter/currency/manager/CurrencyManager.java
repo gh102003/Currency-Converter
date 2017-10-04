@@ -67,7 +67,7 @@ public class CurrencyManager {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	private void updateReferencesToCurrencies()
 	{
@@ -82,7 +82,7 @@ public class CurrencyManager {
 	private void loadCurrencyDetailsPanels()
 	{
 		// Setup the frame to use the currencies
-		CurrencyConverterFrame frame = CurrencyConverter.currencyConverterFrame;
+		CurrencyConverterFrame frame = CurrencyConverter.frame;
 
 		if (frame != null)
 		{

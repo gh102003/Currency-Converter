@@ -70,7 +70,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 		registerComponentFontVariations();
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 		setTitle("About");
-		setIconImages(CurrencyConverter.currencyConverterFrame.getIconImages());
+		setIconImages(CurrencyConverter.frame.getIconImages());
 		setSize(580, 300);
 		// setResizable(false);
 		setVisible(true);

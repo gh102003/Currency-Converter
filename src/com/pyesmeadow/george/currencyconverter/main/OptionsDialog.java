@@ -107,7 +107,7 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 			@Override
 			public void itemStateChanged(ItemEvent e)
 			{
-				Currency currencyEUR = CurrencyConverter.currencyConverterFrame.currencyManager.getCurrencyList().getCurrencyFromIdentifier("EUR");
+				Currency currencyEUR = CurrencyConverter.frame.currencyManager.getCurrencyList().getCurrencyFromID("EUR");
 
 				if(currencyEUR != null) {
 					if(e.getStateChange() == ItemEvent.SELECTED) {
@@ -116,8 +116,8 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 						currencyEUR.setCurrencyFormatting(Currency.getCurrencyFormattingFromLocaleString("de_DE"));
 					}
 				}
-				
-				CurrencyConverter.currencyConverterFrame.updateConversion();
+
+				CurrencyConverter.frame.updateConversion();
 			}
 		});
 
@@ -125,8 +125,8 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 
 			@Override
 			public void itemStateChanged(ItemEvent e)
-			{	
-				Currency currencyCAD = CurrencyConverter.currencyConverterFrame.currencyManager.getCurrencyList().getCurrencyFromIdentifier("CAD");
+			{
+				Currency currencyCAD = CurrencyConverter.frame.currencyManager.getCurrencyList().getCurrencyFromID("CAD");
 
 				if(currencyCAD != null) {
 					if(e.getStateChange() == ItemEvent.SELECTED) {
@@ -135,8 +135,8 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 						currencyCAD.setCurrencyFormatting(Currency.getCurrencyFormattingFromLocaleString("en_CA"));
 					}
 				}
-				
-				CurrencyConverter.currencyConverterFrame.updateConversion();
+
+				CurrencyConverter.frame.updateConversion();
 			}
 		});
 
@@ -147,7 +147,7 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 		registerComponentFontVariations();
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 		setTitle("Options");
-		setIconImages(CurrencyConverter.currencyConverterFrame.getIconImages());
+		setIconImages(CurrencyConverter.frame.getIconImages());
 		setSize(563, 250);
 		setMinimumSize(new Dimension(377, 219));
 		setVisible(true);
@@ -176,11 +176,11 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 	{
 		if(e.getItem() == checkboxShowCurrencyDetails) {
 			if(e.getStateChange() == ItemEvent.SELECTED) {
-				CurrencyConverter.currencyConverterFrame.setCurrencyDetailsVisibility(true);
+				CurrencyConverter.frame.setCurrencyDetailsVisibility(true);
 			} else {
-				CurrencyConverter.currencyConverterFrame.setCurrencyDetailsVisibility(false);
+				CurrencyConverter.frame.setCurrencyDetailsVisibility(false);
 			}
-			
+
 		}
 	}
 }
