@@ -43,7 +43,7 @@ public class Save {
 	}
 
 	/**
-	 * Creates a JSON object from this save
+	 * Creates a JSON object from this Save
 	 */
 	JSONObject serializeToJSON()
 	{

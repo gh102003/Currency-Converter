@@ -150,13 +150,7 @@ public class CurrencyList {
 
 			for (Currency currency : CurrencyList.this.currencies)
 			{
-				JSONObject currencyJSON = new JSONObject();
-
-				currencyJSON.put("id", currency.getIdentifier());
-				currencyJSON.put("name", currency.getName());
-				currencyJSON.put("locale", currency.getLocale().toString());
-				currencyJSON.put("valueInUSD", currency.getValueInUSD());
-				currencyJSON.put("iconPath", currency.getIconPath());
+				JSONObject currencyJSON = currency.serializeToJSON();
 
 				currencyListJSON.add(currencyJSON);
 			}
@@ -203,19 +197,11 @@ public class CurrencyList {
 
 					for (Object c : currencyListJSON)
 					{
-
 						// Cast to JSONObject
 						JSONObject currencyJSON = (JSONObject) c;
 
-						// Setup currency parameters
-						String identifier = (String) currencyJSON.get("id");
-						String name = (String) currencyJSON.get("name");
-						Locale locale = Currency.getLocaleFromLocaleString((String) currencyJSON.get("locale"));
-						double valueInUSD = (Double) currencyJSON.get("valueInUSD");
-						String iconPath = (String) currencyJSON.get("iconPath");
-
 						// Create a new Currency and add it to the list
-						Currency currency = new Currency(identifier, name, locale, valueInUSD, iconPath);
+						Currency currency = Currency.deserializeFromJSON(currencyJSON);
 						currencyList.add(currency);
 
 						CurrencyList.this.currencies = currencyList;
