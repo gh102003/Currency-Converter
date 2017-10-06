@@ -3,6 +3,7 @@ package com.pyesmeadow.george.currencyconverter.saves;
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import org.json.simple.JSONObject;
+import sun.util.resources.cldr.uk.CurrencyNames_uk;
 
 import java.util.Locale;
 
@@ -25,21 +26,21 @@ public class Save {
 	/**
 	 * Converts a stored JSON object into a Save
 	 */
-	static Save deserializeFromJSON(JSONObject input)
+	static Save deserializeFromJSON(JSONObject input) throws IllegalArgumentException
 	{
-		Currency fromCurrency = CurrencyConverter.frame.currencyManager.getCurrencyList().getCurrencyFromID((String) input.get(
-				"fromCurrency"));
-		double fromAmount = (double) input.get("fromAmount");
-		Currency toCurrency = CurrencyConverter.frame.currencyManager.getCurrencyList().getCurrencyFromID((String) input.get(
-				"toCurrency"));
-		double toAmount = (double) input.get("toAmount");
-
-		if (fromCurrency == null)
+		try
 		{
-			fromCurrency = new Currency((String) input.get("fromCurrency"), "Unknown", Locale.getDefault(), 1, "");
-		}
+			Currency fromCurrency = Currency.deserializeFromJSON((JSONObject) input.get("fromCurrency"));
+			double fromAmount = (double) input.get("fromAmount");
+			Currency toCurrency = Currency.deserializeFromJSON((JSONObject) input.get("toCurrency"));
+			double toAmount = (double) input.get("toAmount");
 
-		return new Save(fromCurrency, fromAmount, toCurrency, toAmount);
+			return new Save(fromCurrency, fromAmount, toCurrency, toAmount);
+		}
+		catch (IllegalArgumentException | ClassCastException | NullPointerException e)
+		{
+			throw new IllegalArgumentException("The formatting of currencies.json has missing or incorrect fields");
+		}
 	}
 
 	/**
@@ -49,9 +50,9 @@ public class Save {
 	{
 		JSONObject output = new JSONObject();
 
-		output.put("fromCurrency", fromCurrency.getIdentifier());
+		output.put("fromCurrency", fromCurrency.serializeToJSON());
 		output.put("fromAmount", fromAmount);
-		output.put("toCurrency", toCurrency.getIdentifier());
+		output.put("toCurrency", toCurrency.serializeToJSON());
 		output.put("toAmount", toAmount);
 
 		return output;

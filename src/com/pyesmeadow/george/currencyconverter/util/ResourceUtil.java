@@ -19,7 +19,7 @@ public class ResourceUtil {
 
 	/**
 	 * Resizes an image to [width] x [height] pixels.
-	 * 
+	 *
 	 * @param imgToResize
 	 *            the image before the operation
 	 * @param width
@@ -41,7 +41,7 @@ public class ResourceUtil {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param path
 	 *            starts from src, use 'assets/******.***'
 	 */
@@ -63,9 +63,6 @@ public class ResourceUtil {
 	/**
 	 * Opens a file from a absolute path. Use '.toURI()' on a file or URL to get
 	 * a URI. Does not check whether the file exists.
-	 * 
-	 * @param path
-	 *            the path of the file to open
 	 */
 	public static void openAbsoluteFile(URI uri)
 	{
@@ -83,14 +80,14 @@ public class ResourceUtil {
 	/**
 	 * A system-dependent method to get a directory to save data in. Does not
 	 * check whether the file exists.
-	 * 
+	 *
 	 * @return a File that corresponds to:
 	 *         Users/$USER/AppData/Roaming/CurrencyConverter (Windows)
 	 *         $USER/Library/Application Support/CurrencyConverter (Mac)
 	 *         home/.Launcher (*nux)
-	 * 
+	 *
 	 *         If none of these environments are detected, returns null.
-	 * 
+	 *
 	 */
 	public static File getAppdataDirectory()
 	{
@@ -128,7 +125,7 @@ public class ResourceUtil {
 	/**
 	 * This will copy the contents of a file to another. Specify the files in
 	 * the constructor of the FileReader and Writer.
-	 * 
+	 *
 	 * @param reader
 	 * @param writer
 	 * @throws IOException
@@ -148,22 +145,50 @@ public class ResourceUtil {
 	{
 		File appdataDirectory = ResourceUtil.getAppdataDirectory();
 
-		File fileAppdataCurrencyList = new File(appdataDirectory.getAbsolutePath() + "/currencies.json");
+		File fileCurrencyList = new File(appdataDirectory.getAbsolutePath() + "/currencies.json");
 
-		// Check that the file exists
+		// Check that the folder exists
 		if (!appdataDirectory.exists())
 		{
 			appdataDirectory.mkdirs();
 		}
 
-		// If the file doesn't exist, create it and set it to have the
-		// default currency list
-		if (!fileAppdataCurrencyList.exists())
+		// If the file doesn't exist, throw an exception
+		if (!fileCurrencyList.exists())
 		{
 			throw new FileNotFoundException();
 		}
 
-		return fileAppdataCurrencyList;
+		return fileCurrencyList;
+
+	}
+
+	public static File getSavesList()
+	{
+		File appdataDirectory = ResourceUtil.getAppdataDirectory();
+
+		File fileSavesList = new File(appdataDirectory.getAbsolutePath() + "/saves.json");
+
+		// Check that the folder exists
+		if (!appdataDirectory.exists())
+		{
+			appdataDirectory.mkdirs();
+		}
+
+		// If the file doesn't exist, create it
+		if (!fileSavesList.exists())
+		{
+			try
+			{
+				fileSavesList.createNewFile();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return fileSavesList;
 
 	}
 }

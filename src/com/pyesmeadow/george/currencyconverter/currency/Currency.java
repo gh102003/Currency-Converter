@@ -32,17 +32,24 @@ public class Currency {
 	/**
 	 * Converts a stored JSON object into a Currency
 	 */
-	public static Currency deserializeFromJSON(JSONObject currencyJSON)
+	public static Currency deserializeFromJSON(JSONObject currencyJSON) throws IllegalArgumentException
 	{
-		// Setup currency parameters
-		String identifier = (String) currencyJSON.get("id");
-		String name = (String) currencyJSON.get("name");
-		Locale locale = Currency.getLocaleFromLocaleString((String) currencyJSON.get("locale"));
-		double valueInUSD = (Double) currencyJSON.get("valueInUSD");
-		String iconPath = (String) currencyJSON.get("iconPath");
+		try
+		{
+			// Setup currency parameters
+			String identifier = (String) currencyJSON.get("id");
+			String name = (String) currencyJSON.get("name");
+			Locale locale = Currency.getLocaleFromLocaleString((String) currencyJSON.get("locale"));
+			double valueInUSD = (Double) currencyJSON.get("valueInUSD");
+			String iconPath = (String) currencyJSON.get("iconPath");
 
-		// Create a new Currency
-		return new Currency(identifier, name, locale, valueInUSD, iconPath);
+			// Create a new Currency
+			return new Currency(identifier, name, locale, valueInUSD, iconPath);
+		}
+		catch (ClassCastException | NullPointerException e)
+		{
+			throw new IllegalArgumentException("The formatting of currencies.json has missing or incorrect fields");
+		}
 	}
 
 	/**
@@ -67,6 +74,22 @@ public class Currency {
 	public static NumberFormat getCurrencyFormattingFromLocaleString(String localeString)
 	{
 		return NumberFormat.getCurrencyInstance(getLocaleFromLocaleString(localeString));
+	}
+
+	/**
+	 * Creates a JSON object from this Currency
+	 */
+	public JSONObject serializeToJSON()
+	{
+		JSONObject currencyJSON = new JSONObject();
+
+		currencyJSON.put("id", this.getIdentifier());
+		currencyJSON.put("name", this.getName());
+		currencyJSON.put("locale", this.getLocale().toString());
+		currencyJSON.put("valueInUSD", this.getValueInUSD());
+		currencyJSON.put("iconPath", this.getIconPath());
+
+		return currencyJSON;
 	}
 
 	public String getIdentifier()
@@ -145,21 +168,5 @@ public class Currency {
 	public String getIconPath()
 	{
 		return iconPath;
-	}
-
-	/**
-	 * Creates a JSON object from this Currency
-	 */
-	public JSONObject serializeToJSON()
-	{
-		JSONObject currencyJSON = new JSONObject();
-
-		currencyJSON.put("id", this.getIdentifier());
-		currencyJSON.put("name", this.getName());
-		currencyJSON.put("locale", this.getLocale().toString());
-		currencyJSON.put("valueInUSD", this.getValueInUSD());
-		currencyJSON.put("iconPath", this.getIconPath());
-
-		return currencyJSON;
 	}
 }
