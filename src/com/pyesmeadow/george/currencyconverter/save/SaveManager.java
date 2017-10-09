@@ -1,5 +1,6 @@
-package com.pyesmeadow.george.currencyconverter.saves;
+package com.pyesmeadow.george.currencyconverter.save;
 
+import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -11,12 +12,40 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
-public class SavesManager {
+public class SaveManager implements Iterable<Save> {
 
 	private ArrayList<Save> saves;
 
-	private void serializeCurrencies()
+	public SaveManager()
+	{
+		saves = new ArrayList<>();
+
+		// Sync JSON with ArrayList
+		deserializeSaves();
+		serializeSaves();
+	}
+
+	public void addSave(Save save)
+	{
+		saves.add(save);
+		serializeSaves();
+
+		CurrencyConverter.frame.panelSaves.repopulateSaves();
+	}
+
+	public boolean removeSave(Save save)
+	{
+		boolean existed = saves.remove(save);
+
+		serializeSaves();
+		CurrencyConverter.frame.panelSaves.repopulateSaves();
+
+		return existed;
+	}
+
+	private void serializeSaves()
 	{
 		JSONArray savesArrayJSON = new JSONArray();
 
@@ -26,7 +55,7 @@ public class SavesManager {
 			savesArrayJSON.add(saveJSON);
 		}
 
-		try (FileWriter writer = new FileWriter(ResourceUtil.getCurrencyList()))
+		try (FileWriter writer = new FileWriter(ResourceUtil.getSavesList()))
 		{
 			savesArrayJSON.writeJSONString(writer);
 			writer.flush();
@@ -37,7 +66,7 @@ public class SavesManager {
 		}
 	}
 
-	private void deserializeCurrencies()
+	private void deserializeSaves()
 	{
 		File savesFile = ResourceUtil.getSavesList();
 
@@ -63,4 +92,9 @@ public class SavesManager {
 		}
 	}
 
+	@Override
+	public Iterator<Save> iterator()
+	{
+		return saves.iterator();
+	}
 }

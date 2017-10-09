@@ -142,7 +142,7 @@ public class CurrencyList {
 		}
 		catch (Exception e)
 		{
-
+			e.printStackTrace();
 		}
 	}
 

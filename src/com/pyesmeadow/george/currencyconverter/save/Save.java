@@ -1,11 +1,7 @@
-package com.pyesmeadow.george.currencyconverter.saves;
+package com.pyesmeadow.george.currencyconverter.save;
 
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
-import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import org.json.simple.JSONObject;
-import sun.util.resources.cldr.uk.CurrencyNames_uk;
-
-import java.util.Locale;
 
 @SuppressWarnings("unchecked")
 public class Save {
@@ -15,7 +11,7 @@ public class Save {
 	private final Currency toCurrency;
 	private final double toAmount;
 
-	Save(Currency fromCurrency, double fromAmount, Currency toCurrency, double toAmount)
+	public Save(Currency fromCurrency, double fromAmount, Currency toCurrency, double toAmount)
 	{
 		this.fromCurrency = fromCurrency;
 		this.fromAmount = fromAmount;

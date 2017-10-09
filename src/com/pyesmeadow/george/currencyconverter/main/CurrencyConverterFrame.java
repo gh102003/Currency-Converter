@@ -1,74 +1,53 @@
 package com.pyesmeadow.george.currencyconverter.main;
 
-import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Toolkit;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.Locale;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.UIManager;
-
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.currency.CurrencyDetailsPanel;
 import com.pyesmeadow.george.currencyconverter.currency.CurrencyUpdater;
 import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyList;
 import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyManager;
+import com.pyesmeadow.george.currencyconverter.save.Save;
+import com.pyesmeadow.george.currencyconverter.save.SavePanel;
+import com.pyesmeadow.george.currencyconverter.save.SaveManager;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.Util;
 
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Locale;
+
 public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemListener {
 
 	private static final long serialVersionUID = 3584042683319202624L;
+	private static final Dimension DEFAULT_SIZE = new Dimension(600, 460);
+	private static final Dimension MINIMUM_SIZE = new Dimension(600, 460);
+	private static final Dimension COLLAPSED_MINIMUM_SIZE = new Dimension(600, 200);
 
-	// Currency Manager
+	// Currency and save managers
 	public CurrencyManager currencyManager = new CurrencyManager();
-
 	// Menu bar
 	public CurrencyConverterMenuBar menuBar = new CurrencyConverterMenuBar(this);
-
-	private static final Dimension DEFAULT_SIZE = new Dimension(600, 410);
-	private static final Dimension MINIMUM_SIZE = new Dimension(600, 410);
-	private static final Dimension COLLAPSED_MINIMUM_SIZE = new Dimension(600, 150);
-
-	// Create main components
-	public JPanel panelMain = new JPanel();
-	public JComboBox<String> comboFromCurrency = new JComboBox<String>();
-	public JTextField fieldFromCurrencyAmount = new JTextField(8);
-	public JLabel labelEquals = new JLabel("=");
-	public JComboBox<String> comboToCurrency = new JComboBox<String>();
-	public JLabel labelToCurrencyAmount = new JLabel("      ");
-
-	// Create currency details components
-	public JPanel panelCurrencyDetails = new JPanel();
-	public JPanel panelFromCurrency = new JPanel();
-	public JPanel panelToCurrency = new JPanel();
-
-	// Dialogs
+	// Dialogs and panels
 	public AboutDialog aboutDialog;
 	public OptionsDialog optionsDialog;
 	public CurrencyUpdater currencyUpdater;
+	private SaveManager saveManager = new SaveManager();
+	public SavePanel panelSaves = new SavePanel(saveManager);
+	// Create main components
+	private JPanel panelConversion = new JPanel();
+	private JComboBox<String> comboFromCurrency = new JComboBox<String>();
+	private JTextField fieldFromCurrencyAmount = new JTextField(8);
+	private JLabel labelEquals = new JLabel("=");
+	private JComboBox<String> comboToCurrency = new JComboBox<String>();
+	private JLabel labelToCurrencyAmount = new JLabel("      ");
+	private JButton btnSave = new JButton("Save");
+	// Create currency details components
+	private JPanel panelCurrencyDetails = new JPanel();
+	private JPanel panelFromCurrency = new JPanel();
+	private JPanel panelToCurrency = new JPanel();
 
 	public CurrencyConverterFrame(boolean shouldUpdateOnStart)
 	{
@@ -86,10 +65,10 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		setLayout(new GridBagLayout());
 
 		// Setup panels
-		panelMain.setLayout(new BoxLayout(panelMain, BoxLayout.LINE_AXIS));
-		panelMain.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
-		panelMain.setAlignmentX(CENTER_ALIGNMENT);
-		panelMain.setMaximumSize(new Dimension(800, 35));
+		panelConversion.setLayout(new BoxLayout(panelConversion, BoxLayout.LINE_AXIS));
+		panelConversion.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+		panelConversion.setAlignmentX(CENTER_ALIGNMENT);
+		panelConversion.setMaximumSize(new Dimension(800, 35));
 
 		panelFromCurrency.setLayout(new CardLayout());
 		panelFromCurrency.setBorder(BorderFactory.createTitledBorder("From Currency"));
@@ -98,6 +77,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		panelToCurrency.setBorder(BorderFactory.createTitledBorder("To Currency"));
 
 		panelCurrencyDetails.setBorder(BorderFactory.createTitledBorder("Currency Details"));
+		panelSaves.setBorder(BorderFactory.createTitledBorder("Saves"));
 
 		// Setup components
 		fieldFromCurrencyAmount.setMinimumSize(new Dimension(80, 35));
@@ -109,15 +89,17 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		labelToCurrencyAmount.setAlignmentY(Component.CENTER_ALIGNMENT);
 
 		// Add components to panels
-		panelMain.add(comboFromCurrency);
-		panelMain.add(Box.createRigidArea(new Dimension(10, 0)));
-		panelMain.add(fieldFromCurrencyAmount);
-		panelMain.add(Box.createRigidArea(new Dimension(10, 0)));
-		panelMain.add(labelEquals);
-		panelMain.add(Box.createRigidArea(new Dimension(10, 0)));
-		panelMain.add(comboToCurrency);
-		panelMain.add(Box.createRigidArea(new Dimension(10, 0)));
-		panelMain.add(labelToCurrencyAmount);
+		panelConversion.add(comboFromCurrency);
+		panelConversion.add(Box.createRigidArea(new Dimension(10, 0)));
+		panelConversion.add(fieldFromCurrencyAmount);
+		panelConversion.add(Box.createRigidArea(new Dimension(10, 0)));
+		panelConversion.add(labelEquals);
+		panelConversion.add(Box.createRigidArea(new Dimension(10, 0)));
+		panelConversion.add(comboToCurrency);
+		panelConversion.add(Box.createRigidArea(new Dimension(10, 0)));
+		panelConversion.add(labelToCurrencyAmount);
+		panelConversion.add(Box.createRigidArea(new Dimension(10, 0)));
+		panelConversion.add(btnSave);
 
 		if (shouldUpdateOnStart)
 		{
@@ -125,7 +107,8 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 			try
 			{
 				thread.join();
-			} catch (InterruptedException e)
+			}
+			catch (InterruptedException e)
 			{
 				e.printStackTrace();
 			}
@@ -139,9 +122,11 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = GridBagConstraints.RELATIVE;
+		c.fill = GridBagConstraints.HORIZONTAL;
 
-		add(panelMain, c);
+		add(panelConversion, c);
 		add(panelCurrencyDetails, c);
+		add(panelSaves, c);
 
 		// Set font size
 		registerComponentFontVariations();
@@ -167,14 +152,10 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		// Load icon images
 		ArrayList<Image> iconList = new ArrayList<Image>();
 
-		Image icon16 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon16.png"));
-		Image icon32 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon32.png"));
-		Image icon64 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon64.png"));
-		Image icon128 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon128.png"));
+		Image icon16 = Toolkit.getDefaultToolkit().getImage(CurrencyConverterFrame.class.getResource("/assets/icon16.png"));
+		Image icon32 = Toolkit.getDefaultToolkit().getImage(CurrencyConverterFrame.class.getResource("/assets/icon32.png"));
+		Image icon64 = Toolkit.getDefaultToolkit().getImage(CurrencyConverterFrame.class.getResource("/assets/icon64.png"));
+		Image icon128 = Toolkit.getDefaultToolkit().getImage(CurrencyConverterFrame.class.getResource("/assets/icon128.png"));
 
 		iconList.add(icon16);
 		iconList.add(icon32);
@@ -189,7 +170,8 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		try
 		{
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
 		}
@@ -206,12 +188,13 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	public void updateConversion()
 	{
 		// Set the amount to be converted but default to 0
-		float amountFrom;
+		double amountFrom;
 
 		try
 		{
-			amountFrom = Float.parseFloat(fieldFromCurrencyAmount.getText());
-		} catch (NullPointerException | NumberFormatException e)
+			amountFrom = Double.parseDouble(fieldFromCurrencyAmount.getText());
+		}
+		catch (NullPointerException | NumberFormatException e)
 		{
 			amountFrom = 0;
 		}
@@ -224,12 +207,13 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		// Update the output label to the conversion
 		if (currencyTo != null && currencyFrom != null)
 		{
-			labelToCurrencyAmount.setText(currencyTo.getCurrencyFormatting()
-					.format(CurrencyConverter.convertCurrency(amountFrom, currencyFrom, currencyTo)));
+			labelToCurrencyAmount.setText(currencyTo.getCurrencyFormatting().format(CurrencyConverter.convertCurrency(amountFrom,
+					currencyFrom,
+					currencyTo)));
 		}
 	}
 
-	public void swapCurrencies()
+	private void swapCurrencies()
 	{
 		String prevFrom = (String) comboFromCurrency.getSelectedItem();
 		String prevTo = (String) comboToCurrency.getSelectedItem();
@@ -238,9 +222,10 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 		try
 		{
-			prevConversion = currencyManager.getCurrencyList().getCurrencyFromID(prevTo).getCurrencyFormatting()
-											.parse(labelToCurrencyAmount.getText()).doubleValue();
-		} catch (ParseException e)
+			prevConversion = currencyManager.getCurrencyList().getCurrencyFromID(prevTo).getCurrencyFormatting().parse(
+					labelToCurrencyAmount.getText()).doubleValue();
+		}
+		catch (ParseException e)
 		{
 			e.printStackTrace();
 		}
@@ -255,9 +240,9 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		updateConversion();
 	}
 
-	public void registerComponentFontVariations()
+	protected void registerComponentFontVariations()
 	{
-		// panelMain
+		// panelConversion
 		if (!Util.isRunningOnMac())
 		{
 			FontUtil.registerComponentFontVariation(comboFromCurrency, FontVariation.LARGE_PLAIN);
@@ -265,13 +250,16 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 			FontUtil.registerComponentFontVariation(labelEquals, FontVariation.LARGE_PLAIN);
 			FontUtil.registerComponentFontVariation(comboToCurrency, FontVariation.LARGE_PLAIN);
 			FontUtil.registerComponentFontVariation(labelToCurrencyAmount, FontVariation.LARGE_SYMBOL);
-		} else
+			FontUtil.registerComponentFontVariation(btnSave, FontVariation.LARGE_PLAIN);
+		}
+		else
 		{
 			FontUtil.registerComponentFontVariation(comboFromCurrency, FontVariation.SMALL_PLAIN);
 			FontUtil.registerComponentFontVariation(fieldFromCurrencyAmount, FontVariation.SMALL_PLAIN);
 			FontUtil.registerComponentFontVariation(labelEquals, FontVariation.SMALL_PLAIN);
 			FontUtil.registerComponentFontVariation(comboToCurrency, FontVariation.SMALL_PLAIN);
 			FontUtil.registerComponentFontVariation(labelToCurrencyAmount, FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(btnSave, FontVariation.SMALL_PLAIN);
 		}
 	}
 
@@ -280,10 +268,12 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		if (!visible)
 		{
 			setMinimumSize(COLLAPSED_MINIMUM_SIZE);
-		} else
+		}
+		else
 		{
 			setMinimumSize(MINIMUM_SIZE);
 		}
+
 		panelCurrencyDetails.setVisible(visible);
 	}
 
@@ -327,7 +317,8 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		if (comboFromCurrency.getSelectedItem() != null && comboFromCurrency.getSelectedItem().equals("USD"))
 		{
 			comboToCurrency.setSelectedItem("EUR");
-		} else
+		}
+		else
 		{
 			comboToCurrency.setSelectedItem("USD");
 		}
@@ -371,8 +362,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 	protected void addListeners()
 	{
-		labelEquals.addMouseListener(new MouseListener()
-		{
+		labelEquals.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
@@ -400,6 +390,40 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 			{
 				swapCurrencies();
 			}
+		});
+
+		btnSave.addActionListener(evt ->
+		{
+			CurrencyList currencyList = currencyManager.getCurrencyList();
+
+			Currency fromCurrency = currencyList.getCurrencyFromID((String) comboFromCurrency.getSelectedItem());
+			Currency toCurrency = currencyList.getCurrencyFromID((String) comboToCurrency.getSelectedItem());
+
+			double fromAmount;
+
+			try
+			{
+				fromAmount = Double.parseDouble(fieldFromCurrencyAmount.getText());
+			}
+			catch (NullPointerException | NumberFormatException e)
+			{
+				fromAmount = 0;
+			}
+
+			double toAmount;
+
+			try
+			{
+				toAmount = toCurrency.getCurrencyFormatting().parse(labelToCurrencyAmount.getText()).doubleValue();
+			}
+			catch (ParseException e)
+			{
+				toAmount = 0;
+			}
+
+
+			Save save = new Save(fromCurrency, fromAmount, toCurrency, toAmount);
+			saveManager.addSave(save);
 		});
 	}
 
@@ -431,5 +455,4 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	{
 		updateConversion();
 	}
-
 }
