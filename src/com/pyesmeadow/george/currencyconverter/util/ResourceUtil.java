@@ -1,15 +1,8 @@
 package com.pyesmeadow.george.currencyconverter.util;
 
-import java.awt.Desktop;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -61,7 +54,7 @@ public class ResourceUtil {
 	}
 
 	/**
-	 * Opens a file from a absolute path. Use '.toURI()' on a file or URL to get
+	 * Opens a file (in explorer) from a absolute path. Use '.toURI()' on a file or URL to get
 	 * a URI. Does not check whether the file exists.
 	 */
 	public static void openAbsoluteFile(URI uri)
@@ -75,6 +68,16 @@ public class ResourceUtil {
 		{
 			e.printStackTrace();
 		}
+	}
+
+	public static URL getResource(String path)
+	{
+		return ResourceUtil.class.getClassLoader().getResource(path);
+	}
+
+	public static Image getImage(String path)
+	{
+		return Toolkit.getDefaultToolkit().getImage(getResource(path));
 	}
 
 	/**

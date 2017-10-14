@@ -1,21 +1,14 @@
 package com.pyesmeadow.george.currencyconverter.currency.manager;
 
-import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class CurrencyManagerEntry extends JPanel {
 
@@ -57,8 +50,7 @@ public class CurrencyManagerEntry extends JPanel {
 
 	protected void createListeners()
 	{
-		labelEdit.addMouseListener(new MouseListener()
-		{
+		labelEdit.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
@@ -84,20 +76,19 @@ public class CurrencyManagerEntry extends JPanel {
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				{
-					Currency c = DialogEditCurrency.showDialog(CurrencyManagerEntry.this.currency);
 
-					if (c != null)
-					{
-						CurrencyConverter.frame.currencyManager.editCurrency(CurrencyManagerEntry.this.currency, c);
-					}
+				Currency c = DialogEditCurrency.showDialog(CurrencyManagerEntry.this.currency);
+
+				if (c != null)
+				{
+					CurrencyConverter.frame.currencyManager.editCurrency(CurrencyManagerEntry.this.currency, c);
 				}
+
 			}
 		});
 
 		// TODO Fix rendering issues
-		labelRemove.addMouseListener(new MouseListener()
-		{
+		labelRemove.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e)

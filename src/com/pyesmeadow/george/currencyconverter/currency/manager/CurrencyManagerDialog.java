@@ -1,47 +1,30 @@
 package com.pyesmeadow.george.currencyconverter.currency.manager;
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Image;
-import java.awt.Insets;
-import java.awt.Toolkit;
-
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
+import javax.swing.*;
+import java.awt.*;
+
 public class CurrencyManagerDialog extends JDialog {
+
+	public static final Image addIcon = ResourceUtil.getImage("assets/add.png");
+	public static final Image editIcon = ResourceUtil.getImage("assets/edit.png");
+	public static final Image editHoverIcon = ResourceUtil.getImage("assets/edit_hover.png");
+	public static final Image removeIcon = ResourceUtil.getImage("assets/remove.png");
+	public static final Image removeHoverIcon = ResourceUtil.getImage("assets/remove_hover.png");
 
 	private static final long serialVersionUID = 7762267343511187163L;
 
 	private CurrencyManager currencyManager;
-
-	public static final Image addIcon = Toolkit.getDefaultToolkit()
-			.getImage(ResourceUtil.class.getClassLoader().getResource("assets/add.png"));
-	public static final Image editIcon = Toolkit.getDefaultToolkit()
-			.getImage(ResourceUtil.class.getClassLoader().getResource("assets/edit.png"));
-	public static final Image editHoverIcon = Toolkit.getDefaultToolkit()
-			.getImage(ResourceUtil.class.getClassLoader().getResource("assets/edit_hover.png"));
-	public static final Image removeIcon = Toolkit.getDefaultToolkit()
-			.getImage(ResourceUtil.class.getClassLoader().getResource("assets/remove.png"));
-	public static final Image removeHoverIcon = Toolkit.getDefaultToolkit()
-			.getImage(ResourceUtil.class.getClassLoader().getResource("assets/remove_hover.png"));
-
 	// Scroll pane
 	private JPanel panelCurrencies = new JPanel(new GridBagLayout());
 	private JScrollPane scrollPaneCurrencies = new JScrollPane(panelCurrencies,
-			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
+			ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
 	// Navigation panel
 	private JPanel panelNavigation = new JPanel(new GridBagLayout());
@@ -65,7 +48,7 @@ public class CurrencyManagerDialog extends JDialog {
 		c.gridx = 0;
 		c.gridy = GridBagConstraints.RELATIVE;
 		c.weightx = 1.0;
-		c.insets = new Insets(5, 5, 5, 5);
+		c.insets = new Insets(4, 4, 4, 4);
 
 		for (Currency currency : this.currencyManager.getCurrencyList().getCurrencies())
 		{
@@ -117,22 +100,24 @@ public class CurrencyManagerDialog extends JDialog {
 
 	protected void createListeners()
 	{
-		this.btnAddCurrency.addActionListener(e -> {
+		this.btnAddCurrency.addActionListener(e ->
+		{
 
 			Currency c = DialogAddCurrency.showDialog();
 
-			if (c != null)
-				this.currencyManager.addCurrency(c);
+			if (c != null) this.currencyManager.addCurrency(c);
 
 		});
 
-		this.btnRefresh.addActionListener(e -> {
+		this.btnRefresh.addActionListener(e ->
+		{
 
 			this.currencyManager.refreshFromJSON();
 
 		});
 
-		this.btnReset.addActionListener(e -> {
+		this.btnReset.addActionListener(e ->
+		{
 
 			this.currencyManager.resetCurrencies();
 

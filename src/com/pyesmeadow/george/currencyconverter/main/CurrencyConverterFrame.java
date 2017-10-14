@@ -6,8 +6,8 @@ import com.pyesmeadow.george.currencyconverter.currency.CurrencyUpdater;
 import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyList;
 import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyManager;
 import com.pyesmeadow.george.currencyconverter.save.Save;
-import com.pyesmeadow.george.currencyconverter.save.SavePanel;
 import com.pyesmeadow.george.currencyconverter.save.SaveManager;
+import com.pyesmeadow.george.currencyconverter.save.SavePanel;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.Util;
@@ -22,9 +22,9 @@ import java.util.Locale;
 public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemListener {
 
 	private static final long serialVersionUID = 3584042683319202624L;
-	private static final Dimension DEFAULT_SIZE = new Dimension(600, 460);
-	private static final Dimension MINIMUM_SIZE = new Dimension(600, 460);
-	private static final Dimension COLLAPSED_MINIMUM_SIZE = new Dimension(600, 200);
+	private static final Dimension DEFAULT_SIZE = new Dimension(600, 520);
+	private static final Dimension MINIMUM_SIZE = new Dimension(600, 500);
+	private static final Dimension COLLAPSED_MINIMUM_SIZE = new Dimension(600, 250);
 
 	// Currency and save managers
 	public CurrencyManager currencyManager = new CurrencyManager();
@@ -51,6 +51,15 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 	public CurrencyConverterFrame(boolean shouldUpdateOnStart)
 	{
+		try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
 		Thread thread = null;
 
 		if (shouldUpdateOnStart)
@@ -115,6 +124,8 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		}
 		addCurrencies(currencyManager.getCurrencyList());
 
+		panelCurrencyDetails.setLayout(new BoxLayout(panelCurrencyDetails, BoxLayout.LINE_AXIS));
+
 		panelCurrencyDetails.add(panelFromCurrency);
 		panelCurrencyDetails.add(panelToCurrency);
 
@@ -123,9 +134,12 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		c.gridx = 0;
 		c.gridy = GridBagConstraints.RELATIVE;
 		c.fill = GridBagConstraints.HORIZONTAL;
+		c.weightx = 0.1;
 
 		add(panelConversion, c);
 		add(panelCurrencyDetails, c);
+		c.fill = GridBagConstraints.BOTH;
+		c.weighty = 1;
 		add(panelSaves, c);
 
 		// Set font size
@@ -167,18 +181,9 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		// Set frame parameters
 		this.setJMenuBar(this.menuBar);
 
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
 		pack();
 		setLocationRelativeTo(null);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setSize(CurrencyConverterFrame.DEFAULT_SIZE);
 		setMinimumSize(CurrencyConverterFrame.MINIMUM_SIZE);
 		setVisible(true);
