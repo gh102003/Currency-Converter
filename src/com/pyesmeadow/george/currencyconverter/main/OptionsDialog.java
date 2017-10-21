@@ -137,13 +137,13 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 		registerComponentFontVariations();
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 		setTitle("Options");
-		setIconImages(CurrencyConverter.frame.getIconImages());
+		setIconImages(CurrencyConverter.APP_ICONS);
 		setSize(563, 250);
 		setMinimumSize(new Dimension(377, 219));
 		setVisible(true);
 	}
 
-	public void registerComponentFontVariations()
+	protected void registerComponentFontVariations()
 	{
 		FontUtil.registerComponentFontVariation(checkboxAlternativeEURFormatting, FontVariation.SMALL_PLAIN);
 		FontUtil.registerComponentFontVariation(checkboxAlternativeCADFormatting, FontVariation.SMALL_PLAIN);

@@ -1,20 +1,13 @@
 package com.pyesmeadow.george.currencyconverter.currency;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-
 import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyManager;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.HTTPUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class CurrencyUpdater extends JDialog implements Runnable {
 
@@ -55,7 +48,7 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 		setSize(new Dimension(400, 300));
 		setResizable(false);
 		setTitle("Currency Updater");
-		setIconImages(CurrencyConverter.frame.getIconImages());
+		setIconImages(CurrencyConverter.APP_ICONS);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
 	}

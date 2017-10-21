@@ -6,11 +6,10 @@ import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontProfile;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 import java.awt.*;
-<<<<<<< HEAD
-import java.util.List;
-=======
 import java.io.FileNotFoundException;
->>>>>>> saves
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * @author georg_000
@@ -18,12 +17,8 @@ import java.io.FileNotFoundException;
  */
 public class CurrencyConverter {
 
-	public static CurrencyConverterFrame frame;
-
 	public static final String VERSION = "1.0.0";
-
-	private static FontProfile fontProfile = FontProfile.MEDIUM;
-
+	public static CurrencyConverterFrame frame;
 	// Icons
 	public static Image ADD_ICON;
 	public static Image INFO_ICON;
@@ -32,6 +27,8 @@ public class CurrencyConverter {
 	public static Image EDIT_ICON_HOVER;
 	public static Image REMOVE_ICON;
 	public static Image REMOVE_ICON_HOVER;
+	public static List<Image> APP_ICONS = new ArrayList<>();
+	private static FontProfile fontProfile = FontProfile.MEDIUM;
 
 	public static void main(String[] args)
 	{
@@ -54,6 +51,16 @@ public class CurrencyConverter {
 			EDIT_ICON_HOVER = ResourceUtil.getImage("assets/edit_hover.png");
 			REMOVE_ICON = ResourceUtil.getImage("assets/remove.png");
 			REMOVE_ICON_HOVER = ResourceUtil.getImage("assets/remove_hover.png");
+
+			Image icon16 = ResourceUtil.getImage("assets/icon_16.png");
+			Image icon32 = ResourceUtil.getImage("assets/icon_32.png");
+			Image icon64 = ResourceUtil.getImage("assets/icon_64.png");
+			Image icon128 = ResourceUtil.getImage("assets/icon_128.png");
+
+			APP_ICONS.add(icon16);
+			APP_ICONS.add(icon32);
+			APP_ICONS.add(icon64);
+			APP_ICONS.add(icon128);
 		}
 		catch (FileNotFoundException e)
 		{
@@ -77,8 +84,7 @@ public class CurrencyConverter {
 	/**
 	 * Sets the font profile. Also updates components.
 	 *
-	 * @param fontProfile
-	 *            the profile to update to
+	 * @param fontProfile the profile to update to
 	 */
 	public static void setFontProfile(FontProfile fontProfile)
 	{

@@ -10,13 +10,11 @@ import com.pyesmeadow.george.currencyconverter.save.SaveManager;
 import com.pyesmeadow.george.currencyconverter.save.gui.SavePanel;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
-import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 import com.pyesmeadow.george.currencyconverter.util.Util;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.FileNotFoundException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -162,56 +160,20 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 		this.addListeners();
 
-		// Set frame title
+		// Set title and icons
 		setTitle("Currency Converter");
-
-		// Load icon images
-		ArrayList<Image> iconList = new ArrayList<Image>();
-
-<<<<<<< HEAD
-		Image icon16 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_16.png"));
-		Image icon32 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_32.png"));
-		Image icon64 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_64.png"));
-		Image icon128 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_128.png"));
-=======
-		Image icon16 = null;
-		Image icon32 = null;
-		Image icon64 = null;
-		Image icon128 = null;
-		try
-		{
-			icon16 = ResourceUtil.getImage("assets/icon16.png");
-			icon32 = ResourceUtil.getImage("assets/icon32.png");
-			icon64 = ResourceUtil.getImage("assets/icon64.png");
-			icon128 = ResourceUtil.getImage("assets/icon128.png");
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
->>>>>>> saves
-
-		iconList.add(icon16);
-		iconList.add(icon32);
-		iconList.add(icon64);
-		iconList.add(icon128);
-
-		setIconImages(iconList);
+		setIconImages(CurrencyConverter.APP_ICONS);
 
 		// Set frame parameters
 		this.setJMenuBar(this.menuBar);
 
-		pack();
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setSize(CurrencyConverterFrame.DEFAULT_SIZE);
 		setMinimumSize(CurrencyConverterFrame.MINIMUM_SIZE);
-		setVisible(true);
 		updateConversion();
+		setVisible(true);
+		pack();
 	}
 
 	public void updateConversion()

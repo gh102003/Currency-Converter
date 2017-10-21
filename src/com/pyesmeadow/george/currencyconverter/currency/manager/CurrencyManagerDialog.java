@@ -87,7 +87,7 @@ public class CurrencyManagerDialog extends JDialog {
 		this.setMinimumSize(new Dimension(380, 400));
 		this.setMaximumSize(new Dimension(600, 600));
 		this.setTitle("Manage Currencies");
-		this.setIconImages(CurrencyConverter.frame.getIconImages());
+		this.setIconImages(CurrencyConverter.APP_ICONS);
 		this.setVisible(true);
 	}
 

@@ -1,20 +1,13 @@
 package com.pyesmeadow.george.currencyconverter.main;
 
-import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class AboutDialog extends JDialog implements ActionListener {
 
@@ -70,7 +63,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 		registerComponentFontVariations();
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 		setTitle("About");
-		setIconImages(CurrencyConverter.frame.getIconImages());
+		setIconImages(CurrencyConverter.APP_ICONS);
 		setSize(580, 300);
 		// setResizable(false);
 		setVisible(true);

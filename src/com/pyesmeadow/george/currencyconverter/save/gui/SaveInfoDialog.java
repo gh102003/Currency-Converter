@@ -54,8 +54,8 @@ class SaveInfoDialog extends JDialog {
 
 		setSize(new Dimension(450, 250));
 		setMinimumSize(new Dimension(450, 250));
-		setMaximumSize(new Dimension(480, 280));
-		setIconImages(CurrencyConverter.frame.getIconImages());
+		setMaximumSize(new Dimension(450, 250));
+		setIconImages(CurrencyConverter.APP_ICONS);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Save info");
 		pack();

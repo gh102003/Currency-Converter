@@ -67,7 +67,7 @@ public class DialogAddCurrency extends JDialog {
 		this.addListeners();
 	}
 
-	public static Currency showDialog()
+	static Currency showDialog()
 	{
 		DialogAddCurrency dialog = new DialogAddCurrency();
 
