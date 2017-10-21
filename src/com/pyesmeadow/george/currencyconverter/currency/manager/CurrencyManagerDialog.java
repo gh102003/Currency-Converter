@@ -4,18 +4,11 @@ import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
-import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class CurrencyManagerDialog extends JDialog {
-
-	public static final Image addIcon = ResourceUtil.getImage("assets/add.png");
-	public static final Image editIcon = ResourceUtil.getImage("assets/edit.png");
-	public static final Image editHoverIcon = ResourceUtil.getImage("assets/edit_hover.png");
-	public static final Image removeIcon = ResourceUtil.getImage("assets/remove.png");
-	public static final Image removeHoverIcon = ResourceUtil.getImage("assets/remove_hover.png");
 
 	private static final long serialVersionUID = 7762267343511187163L;
 
@@ -28,7 +21,7 @@ public class CurrencyManagerDialog extends JDialog {
 
 	// Navigation panel
 	private JPanel panelNavigation = new JPanel(new GridBagLayout());
-	private JButton btnAddCurrency = new JButton(new ImageIcon(addIcon));
+	private JButton btnAddCurrency = new JButton(new ImageIcon(CurrencyConverter.ADD_ICON));
 	private JButton btnRefresh = new JButton("Refresh");
 	private JButton btnReset = new JButton("Reset");
 	private JButton btnClose = new JButton("Close");

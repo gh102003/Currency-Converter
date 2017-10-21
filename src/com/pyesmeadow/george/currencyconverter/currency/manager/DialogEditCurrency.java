@@ -1,21 +1,12 @@
 package com.pyesmeadow.george.currencyconverter.currency.manager;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
+import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.main.PNGFileFilter;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class DialogEditCurrency extends JDialog {
 
@@ -39,7 +30,7 @@ public class DialogEditCurrency extends JDialog {
 	private JTextField fieldIconPath = new JTextField(20);
 	private JButton btnBrowse = new JButton("Browse...");
 
-	public DialogEditCurrency(Currency defaultValues)
+	private DialogEditCurrency(Currency defaultValues)
 	{
 		fieldName.setText(defaultValues.getName());
 		fieldIdentifier.setText(defaultValues.getIdentifier());
@@ -87,7 +78,8 @@ public class DialogEditCurrency extends JDialog {
 		DialogEditCurrency dialog = new DialogEditCurrency(defaultValues);
 
 		int result = JOptionPane.showOptionDialog(null, dialog.panel, "Edit Currency", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, new ImageIcon(CurrencyManagerDialog.editIcon),
+				JOptionPane.PLAIN_MESSAGE,
+				new ImageIcon(CurrencyConverter.EDIT_ICON),
 				new String[] { "Edit Currency", "Cancel" }, "Cancel");
 
 		if(result == JOptionPane.OK_OPTION)
@@ -97,12 +89,10 @@ public class DialogEditCurrency extends JDialog {
 				return new Currency(dialog.fieldIdentifier.getText(), dialog.fieldName.getText(),
 						Currency.getLocaleFromLocaleString(dialog.fieldLocale.getText()),
 						Double.parseDouble(dialog.fieldValueInUSD.getText()), dialog.fieldIconPath.getText());
-			} catch(NullPointerException e)
+			}
+			catch (NullPointerException | NumberFormatException e)
 			{
-
-			} catch(NumberFormatException e)
-			{
-
+				e.printStackTrace();
 			}
 		}
 

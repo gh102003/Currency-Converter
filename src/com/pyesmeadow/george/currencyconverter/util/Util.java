@@ -1,6 +1,9 @@
 package com.pyesmeadow.george.currencyconverter.util;
 
+import com.pyesmeadow.george.currencyconverter.currency.Currency;
+
 import java.io.File;
+import java.text.NumberFormat;
 
 public class Util {
 
@@ -29,5 +32,10 @@ public class Util {
 			ext = s.substring(i + 1).toLowerCase();
 		}
 		return ext;
+	}
+
+	public static NumberFormat getUSDFormatting()
+	{
+		return Currency.getCurrencyFormattingFromLocaleString("en_US");
 	}
 }

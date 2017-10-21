@@ -30,8 +30,8 @@ public class CurrencyManagerEntry extends JPanel {
 		labelName.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		FontUtil.registerComponentFontVariation(labelName, FontVariation.SMALL_PLAIN);
 
-		labelEdit = new JLabel(new ImageIcon(CurrencyManagerDialog.editIcon));
-		labelRemove = new JLabel(new ImageIcon(CurrencyManagerDialog.removeIcon));
+		labelEdit = new JLabel(new ImageIcon(CurrencyConverter.EDIT_ICON));
+		labelRemove = new JLabel(new ImageIcon(CurrencyConverter.REMOVE_ICON));
 
 		labelEdit.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		labelRemove.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
@@ -64,13 +64,13 @@ public class CurrencyManagerEntry extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				labelEdit.setIcon(new ImageIcon(CurrencyManagerDialog.editIcon));
+				labelEdit.setIcon(new ImageIcon(CurrencyConverter.EDIT_ICON));
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				labelEdit.setIcon(new ImageIcon(CurrencyManagerDialog.editHoverIcon));
+				labelEdit.setIcon(new ImageIcon(CurrencyConverter.EDIT_ICON_HOVER));
 			}
 
 			@Override
@@ -103,13 +103,13 @@ public class CurrencyManagerEntry extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				labelRemove.setIcon(new ImageIcon(CurrencyManagerDialog.removeIcon));
+				labelRemove.setIcon(new ImageIcon(CurrencyConverter.REMOVE_ICON));
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				labelRemove.setIcon(new ImageIcon(CurrencyManagerDialog.removeHoverIcon));
+				labelRemove.setIcon(new ImageIcon(CurrencyConverter.REMOVE_ICON_HOVER));
 			}
 
 			@Override

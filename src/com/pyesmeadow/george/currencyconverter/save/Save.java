@@ -54,22 +54,22 @@ public class Save {
 		return output;
 	}
 
-	Currency getFromCurrency()
+	public Currency getFromCurrency()
 	{
 		return fromCurrency;
 	}
 
-	Currency getToCurrency()
+	public Currency getToCurrency()
 	{
 		return toCurrency;
 	}
 
-	double getFromAmount()
+	public double getFromAmount()
 	{
 		return fromAmount;
 	}
 
-	double getToAmount()
+	public double getToAmount()
 	{
 		return toAmount;
 	}

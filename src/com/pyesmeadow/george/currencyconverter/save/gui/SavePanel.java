@@ -1,9 +1,9 @@
-package com.pyesmeadow.george.currencyconverter.save;
+package com.pyesmeadow.george.currencyconverter.save.gui;
 
-import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
+import com.pyesmeadow.george.currencyconverter.save.Save;
+import com.pyesmeadow.george.currencyconverter.save.SaveManager;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
-import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,10 +12,6 @@ import java.awt.event.MouseListener;
 
 public class SavePanel extends JPanel {
 
-	private static final Image INFO_ICON = ResourceUtil.getImage("assets/info.png");
-	private static final Image INFO_ICON_HOVER = ResourceUtil.getImage("assets/info_hover.png");
-	private static final Image REMOVE_ICON = ResourceUtil.getImage("assets/remove.png");
-	private static final Image REMOVE_ICON_HOVER = ResourceUtil.getImage("assets/remove_hover.png");
 	private final JPanel panelSaves = new JPanel(new GridBagLayout());
 	private final JScrollPane scrollPaneSaves = new JScrollPane(panelSaves,
 			ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -73,11 +69,6 @@ public class SavePanel extends JPanel {
 
 	private class SavePanelEntry extends JPanel {
 
-		private final Currency FROM_CURRENCY;
-		private final double FROM_AMOUNT;
-		private final Currency TO_CURRENCY;
-		private final double TO_AMOUNT;
-
 		private final JLabel labelFromCurrency;
 		private final JLabel labelFromAmount;
 		private final JLabel labelArrow;
@@ -94,20 +85,15 @@ public class SavePanel extends JPanel {
 		{
 			this.save = save;
 
-			this.FROM_CURRENCY = save.getFromCurrency();
-			this.FROM_AMOUNT = save.getFromAmount();
-			this.TO_CURRENCY = save.getToCurrency();
-			this.TO_AMOUNT = save.getToAmount();
-
 			setLayout(new BoxLayout(this, BoxLayout.LINE_AXIS));
 
-			labelFromCurrency = new JLabel(FROM_CURRENCY.getName() + " (" + FROM_CURRENCY.getIdentifier() + ")");
-			labelFromAmount = new JLabel(FROM_CURRENCY.getCurrencyFormatting().format(FROM_AMOUNT));
+			labelFromCurrency = new JLabel(save.getFromCurrency().getName() + " (" + save.getFromCurrency().getIdentifier() + ")");
+			labelFromAmount = new JLabel(save.getFromCurrency().getFormatting().format(save.getFromAmount()));
 			labelArrow = new JLabel("=");
-			labelToCurrency = new JLabel(TO_CURRENCY.getName() + " (" + TO_CURRENCY.getIdentifier() + ")");
-			labelToAmount = new JLabel(TO_CURRENCY.getCurrencyFormatting().format(TO_AMOUNT));
-			labelInfo = new JLabel(new ImageIcon(INFO_ICON));
-			labelRemove = new JLabel(new ImageIcon(REMOVE_ICON));
+			labelToCurrency = new JLabel(save.getToCurrency().getName() + " (" + save.getToCurrency().getIdentifier() + ")");
+			labelToAmount = new JLabel(save.getToCurrency().getFormatting().format(save.getToAmount()));
+			labelInfo = new JLabel(new ImageIcon(CurrencyConverter.INFO_ICON));
+			labelRemove = new JLabel(new ImageIcon(CurrencyConverter.REMOVE_ICON));
 
 			labelFromCurrency.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 			labelFromAmount.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
@@ -156,19 +142,19 @@ public class SavePanel extends JPanel {
 				@Override
 				public void mouseExited(MouseEvent e)
 				{
-					labelInfo.setIcon(new ImageIcon(INFO_ICON));
+					labelInfo.setIcon(new ImageIcon(CurrencyConverter.INFO_ICON));
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e)
 				{
-					labelInfo.setIcon(new ImageIcon(INFO_ICON_HOVER));
+					labelInfo.setIcon(new ImageIcon(CurrencyConverter.INFO_ICON_HOVER));
 				}
 
 				@Override
 				public void mouseClicked(MouseEvent e)
 				{
-					// TODO info dialog
+					new SaveInfoDialog(save);
 				}
 			});
 
@@ -188,13 +174,13 @@ public class SavePanel extends JPanel {
 				@Override
 				public void mouseExited(MouseEvent e)
 				{
-					labelRemove.setIcon(new ImageIcon(REMOVE_ICON));
+					labelRemove.setIcon(new ImageIcon(CurrencyConverter.REMOVE_ICON));
 				}
 
 				@Override
 				public void mouseEntered(MouseEvent e)
 				{
-					labelRemove.setIcon(new ImageIcon(REMOVE_ICON_HOVER));
+					labelRemove.setIcon(new ImageIcon(CurrencyConverter.REMOVE_ICON_HOVER));
 				}
 
 				@Override
@@ -208,10 +194,10 @@ public class SavePanel extends JPanel {
 		private void registerComponentFontVariations()
 		{
 			FontUtil.registerComponentFontVariation(labelFromCurrency, FontUtil.FontVariation.SMALL_PLAIN);
-			FontUtil.registerComponentFontVariation(labelFromAmount, FontUtil.FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(labelFromAmount, FontUtil.FontVariation.SMALL_SYMBOL);
 			FontUtil.registerComponentFontVariation(labelArrow, FontUtil.FontVariation.SMALL_PLAIN);
 			FontUtil.registerComponentFontVariation(labelToCurrency, FontUtil.FontVariation.SMALL_PLAIN);
-			FontUtil.registerComponentFontVariation(labelToAmount, FontUtil.FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(labelToAmount, FontUtil.FontVariation.SMALL_SYMBOL);
 		}
 	}
 }

@@ -14,7 +14,7 @@ public class Currency {
 
 	private String identifier;
 	private String name;
-	private NumberFormat currencyFormatting;
+	private NumberFormat formatting;
 	private Locale locale;
 	private double valueInUSD;
 	private String iconPath;
@@ -23,7 +23,7 @@ public class Currency {
 	{
 		this.identifier = identifier;
 		this.name = name;
-		this.currencyFormatting = NumberFormat.getCurrencyInstance(locale);
+		this.formatting = NumberFormat.getCurrencyInstance(locale);
 		this.locale = locale;
 		this.valueInUSD = valueInUSD;
 		this.iconPath = iconPath;
@@ -97,14 +97,14 @@ public class Currency {
 		return identifier;
 	}
 
-	public NumberFormat getCurrencyFormatting()
+	public NumberFormat getFormatting()
 	{
-		return currencyFormatting;
+		return formatting;
 	}
 
-	public void setCurrencyFormatting(NumberFormat currencyFormatting)
+	public void setFormatting(NumberFormat formatting)
 	{
-		this.currencyFormatting = currencyFormatting;
+		this.formatting = formatting;
 	}
 
 	public double getValueInUSD()
