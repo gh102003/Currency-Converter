@@ -1,21 +1,14 @@
 package com.pyesmeadow.george.currencyconverter.currency.manager;
 
-import java.awt.Color;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.ImageIcon;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class CurrencyManagerEntry extends JPanel {
 
@@ -37,8 +30,8 @@ public class CurrencyManagerEntry extends JPanel {
 		labelName.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		FontUtil.registerComponentFontVariation(labelName, FontVariation.SMALL_PLAIN);
 
-		labelEdit = new JLabel(new ImageIcon(CurrencyManagerDialog.editIcon));
-		labelRemove = new JLabel(new ImageIcon(CurrencyManagerDialog.removeIcon));
+		labelEdit = new JLabel(new ImageIcon(CurrencyConverter.EDIT_ICON));
+		labelRemove = new JLabel(new ImageIcon(CurrencyConverter.REMOVE_ICON));
 
 		labelEdit.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
 		labelRemove.setBorder(BorderFactory.createEmptyBorder(6, 6, 6, 6));
@@ -57,8 +50,7 @@ public class CurrencyManagerEntry extends JPanel {
 
 	protected void createListeners()
 	{
-		labelEdit.addMouseListener(new MouseListener()
-		{
+		labelEdit.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseReleased(MouseEvent e)
 			{
@@ -72,32 +64,31 @@ public class CurrencyManagerEntry extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				labelEdit.setIcon(new ImageIcon(CurrencyManagerDialog.editIcon));
+				labelEdit.setIcon(new ImageIcon(CurrencyConverter.EDIT_ICON));
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				labelEdit.setIcon(new ImageIcon(CurrencyManagerDialog.editHoverIcon));
+				labelEdit.setIcon(new ImageIcon(CurrencyConverter.EDIT_ICON_HOVER));
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e)
 			{
-				{
-					Currency c = DialogEditCurrency.showDialog(CurrencyManagerEntry.this.currency);
 
-					if (c != null)
-					{
-						CurrencyConverter.frame.currencyManager.editCurrency(CurrencyManagerEntry.this.currency, c);
-					}
+				Currency c = DialogEditCurrency.showDialog(CurrencyManagerEntry.this.currency);
+
+				if (c != null)
+				{
+					CurrencyConverter.frame.currencyManager.editCurrency(CurrencyManagerEntry.this.currency, c);
 				}
+
 			}
 		});
 
 		// TODO Fix rendering issues
-		labelRemove.addMouseListener(new MouseListener()
-		{
+		labelRemove.addMouseListener(new MouseListener() {
 
 			@Override
 			public void mouseReleased(MouseEvent e)
@@ -112,13 +103,13 @@ public class CurrencyManagerEntry extends JPanel {
 			@Override
 			public void mouseExited(MouseEvent e)
 			{
-				labelRemove.setIcon(new ImageIcon(CurrencyManagerDialog.removeIcon));
+				labelRemove.setIcon(new ImageIcon(CurrencyConverter.REMOVE_ICON));
 			}
 
 			@Override
 			public void mouseEntered(MouseEvent e)
 			{
-				labelRemove.setIcon(new ImageIcon(CurrencyManagerDialog.removeHoverIcon));
+				labelRemove.setIcon(new ImageIcon(CurrencyConverter.REMOVE_ICON_HOVER));
 			}
 
 			@Override

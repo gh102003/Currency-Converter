@@ -1,21 +1,12 @@
 package com.pyesmeadow.george.currencyconverter.currency.manager;
 
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
-
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
+import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.main.PNGFileFilter;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class DialogAddCurrency extends JDialog {
 
@@ -39,7 +30,7 @@ public class DialogAddCurrency extends JDialog {
 	private JTextField fieldIconPath = new JTextField(20);
 	private JButton btnBrowse = new JButton("Browse...");
 
-	public DialogAddCurrency()
+	private DialogAddCurrency()
 	{
 		GridBagConstraints c = new GridBagConstraints();
 
@@ -81,7 +72,8 @@ public class DialogAddCurrency extends JDialog {
 		DialogAddCurrency dialog = new DialogAddCurrency();
 
 		int result = JOptionPane.showOptionDialog(null, dialog.panel, "Add Currency", JOptionPane.OK_CANCEL_OPTION,
-				JOptionPane.PLAIN_MESSAGE, new ImageIcon(CurrencyManagerDialog.addIcon),
+				JOptionPane.PLAIN_MESSAGE,
+				new ImageIcon(CurrencyConverter.ADD_ICON),
 				new String[] { "Add Currency", "Cancel" }, "Add Currency");
 
 		if(result == JOptionPane.OK_OPTION)
@@ -91,12 +83,10 @@ public class DialogAddCurrency extends JDialog {
 				return new Currency(dialog.fieldIdentifier.getText(), dialog.fieldName.getText(),
 						Currency.getLocaleFromLocaleString(dialog.fieldLocale.getText()),
 						Double.parseDouble(dialog.fieldValueInUSD.getText()), dialog.fieldIconPath.getText());
-			} catch(NullPointerException e)
+			}
+			catch (NullPointerException | NumberFormatException e)
 			{
-
-			} catch(NumberFormatException e)
-			{
-
+				e.printStackTrace();
 			}
 		}
 
@@ -120,7 +110,7 @@ public class DialogAddCurrency extends JDialog {
 
 				this.fieldIconPath.setText(relativePath);
 			}
-			
+
 		});
 	}
 }

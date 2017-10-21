@@ -6,7 +6,11 @@ import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontProfile;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 import java.awt.*;
+<<<<<<< HEAD
 import java.util.List;
+=======
+import java.io.FileNotFoundException;
+>>>>>>> saves
 
 /**
  * @author georg_000
@@ -20,6 +24,15 @@ public class CurrencyConverter {
 
 	private static FontProfile fontProfile = FontProfile.MEDIUM;
 
+	// Icons
+	public static Image ADD_ICON;
+	public static Image INFO_ICON;
+	public static Image INFO_ICON_HOVER;
+	public static Image EDIT_ICON;
+	public static Image EDIT_ICON_HOVER;
+	public static Image REMOVE_ICON;
+	public static Image REMOVE_ICON_HOVER;
+
 	public static void main(String[] args)
 	{
 		boolean shouldUpdateOnStart = true;
@@ -30,6 +43,21 @@ public class CurrencyConverter {
 			{
 				shouldUpdateOnStart = false;
 			}
+		}
+
+		try
+		{
+			ADD_ICON = ResourceUtil.getImage("assets/add.png");
+			INFO_ICON = ResourceUtil.getImage("assets/info.png");
+			INFO_ICON_HOVER = ResourceUtil.getImage("assets/info_hover.png");
+			EDIT_ICON = ResourceUtil.getImage("assets/edit.png");
+			EDIT_ICON_HOVER = ResourceUtil.getImage("assets/edit_hover.png");
+			REMOVE_ICON = ResourceUtil.getImage("assets/remove.png");
+			REMOVE_ICON_HOVER = ResourceUtil.getImage("assets/remove_hover.png");
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
 		}
 
 		frame = new CurrencyConverterFrame(shouldUpdateOnStart);

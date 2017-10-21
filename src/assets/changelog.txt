@@ -1,5 +1,5 @@
 Currency Converter Changelog
-© George Howarth 2017
+ï¿½ George Howarth 2017
 ============================================
 
 Version 1.1 (16-Jul-17)

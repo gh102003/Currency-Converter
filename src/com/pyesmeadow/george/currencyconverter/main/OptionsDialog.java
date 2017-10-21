@@ -1,27 +1,17 @@
 package com.pyesmeadow.george.currencyconverter.main;
 
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontProfile;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.Util;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 
 public class OptionsDialog extends JDialog implements ItemListener, ActionListener {
 
@@ -111,9 +101,9 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 
 				if(currencyEUR != null) {
 					if(e.getStateChange() == ItemEvent.SELECTED) {
-						currencyEUR.setCurrencyFormatting(Currency.getCurrencyFormattingFromLocaleString("it_IT"));
+						currencyEUR.setFormatting(Currency.getCurrencyFormattingFromLocaleString("it_IT"));
 					} else {
-						currencyEUR.setCurrencyFormatting(Currency.getCurrencyFormattingFromLocaleString("de_DE"));
+						currencyEUR.setFormatting(Currency.getCurrencyFormattingFromLocaleString("de_DE"));
 					}
 				}
 
@@ -130,9 +120,9 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 
 				if(currencyCAD != null) {
 					if(e.getStateChange() == ItemEvent.SELECTED) {
-						currencyCAD.setCurrencyFormatting(Currency.getCurrencyFormattingFromLocaleString("fr_CA"));
+						currencyCAD.setFormatting(Currency.getCurrencyFormattingFromLocaleString("fr_CA"));
 					} else {
-						currencyCAD.setCurrencyFormatting(Currency.getCurrencyFormattingFromLocaleString("en_CA"));
+						currencyCAD.setFormatting(Currency.getCurrencyFormattingFromLocaleString("en_CA"));
 					}
 				}
 

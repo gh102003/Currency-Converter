@@ -1,31 +1,26 @@
 package com.pyesmeadow.george.currencyconverter.util;
 
-import java.awt.Desktop;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.RenderingHints;
+import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.Reader;
-import java.io.Writer;
+import java.io.*;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
-/** Utility class for resources */
+/**
+ * Utility class for resources
+ */
 public class ResourceUtil {
+
+	private static final Toolkit tk = Toolkit.getDefaultToolkit();
+	private static final ClassLoader cl = ResourceUtil.class.getClassLoader();
 
 	/**
 	 * Resizes an image to [width] x [height] pixels.
-	 * 
-	 * @param imgToResize
-	 *            the image before the operation
-	 * @param width
-	 *            the target width of the image
-	 * @param height
-	 *            the target height of the image
+	 *
+	 * @param imgToResize the image before the operation
+	 * @param width       the target width of the image
+	 * @param height      the target height of the image
 	 * @return
 	 */
 	public static Image resizeImage(Image imgToResize, int width, int height)
@@ -41,31 +36,25 @@ public class ResourceUtil {
 	}
 
 	/**
-	 * 
-	 * @param path
-	 *            starts from src, use 'assets/******.***'
+	 * @param path starts from src, use 'assets/******.***'
 	 */
-	public static void openFile(String path)
+	public static void openFile(String path) throws FileNotFoundException
 	{
-		ClassLoader cl = ResourceUtil.class.getClassLoader();
-
-		URL url = cl.getResource(path);
+		URL url = getResource(path);
 
 		try
 		{
 			openAbsoluteFile(url.toURI());
-		} catch (URISyntaxException e)
+		}
+		catch (URISyntaxException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * Opens a file from a absolute path. Use '.toURI()' on a file or URL to get
+	 * Opens a file (in explorer) from a absolute path. Use '.toURI()' on a file or URL to get
 	 * a URI. Does not check whether the file exists.
-	 * 
-	 * @param path
-	 *            the path of the file to open
 	 */
 	public static void openAbsoluteFile(URI uri)
 	{
@@ -74,27 +63,49 @@ public class ResourceUtil {
 		try
 		{
 			desktop.browse(uri);
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}
 	}
 
 	/**
+	 * @param path the path of the resource
+	 * @return the URL of the resource
+	 * @throws FileNotFoundException if the file cannot be found or accessed
+	 */
+	public static URL getResource(String path) throws FileNotFoundException
+	{
+		URL resource = cl.getResource(path);
+
+		if (resource == null)
+		{
+			throw new FileNotFoundException("The file at the path specified cannot be found");
+		}
+
+		return resource;
+	}
+
+	public static Image getImage(String path) throws FileNotFoundException
+	{
+		return tk.getImage(getResource(path));
+	}
+
+	/**
 	 * A system-dependent method to get a directory to save data in. Does not
 	 * check whether the file exists.
-	 * 
+	 *
 	 * @return a File that corresponds to:
-	 *         Users/$USER/AppData/Roaming/CurrencyConverter (Windows)
-	 *         $USER/Library/Application Support/CurrencyConverter (Mac)
-	 *         home/.Launcher (*nux)
-	 * 
-	 *         If none of these environments are detected, returns null.
-	 * 
+	 * Users/$USER/AppData/Roaming/CurrencyConverter (Windows)
+	 * $USER/Library/Application Support/CurrencyConverter (Mac)
+	 * home/.Launcher (*nux)
+	 * <p>
+	 * If none of these environments are detected, returns null.
 	 */
 	public static File getAppdataDirectory()
 	{
-		String FileFolder;
+		String fileFolder;
 
 		String os = System.getProperty("os.name").toUpperCase();
 
@@ -102,36 +113,37 @@ public class ResourceUtil {
 		if (os.contains("WIN"))
 		{
 
-			FileFolder = System.getenv("APPDATA") + "\\" + "CurrencyConverter";
+			fileFolder = System.getenv("APPDATA") + "\\" + "CurrencyConverter";
 
-		} else if (os.contains("MAC"))
+		}
+		else if (os.contains("MAC"))
 		{
 
-			FileFolder = System.getProperty("user.home") + "/Library/Application " + "Support" + "/CurrencyConverter";
+			fileFolder = System.getProperty("user.home") + "/Library/Application " + "Support" + "/CurrencyConverter";
 
-		} else if (os.contains("NUX"))
+		}
+		else if (os.contains("NUX"))
 		{
 
-			FileFolder = System.getProperty("user.dir") + "/.CurrencyConverter";
+			fileFolder = System.getProperty("user.dir") + "/.CurrencyConverter";
 
-		} else
+		}
+		else
 		{
 			return null;
 		}
 
-		// Convert the string to a file
-		File directory = new File(FileFolder);
-
-		return directory;
+		// Convert the string to a file and return it
+		return new File(fileFolder);
 	}
 
 	/**
 	 * This will copy the contents of a file to another. Specify the files in
 	 * the constructor of the FileReader and Writer.
-	 * 
-	 * @param reader
-	 * @param writer
-	 * @throws IOException
+	 *
+	 * @param reader a FileReader, with the file of the original file
+	 * @param writer a FileWriter, with the file of the copied file
+	 * @throws IOException If the file cannot be copied
 	 */
 	public static void copyFile(Reader reader, Writer writer) throws IOException
 	{
@@ -148,22 +160,50 @@ public class ResourceUtil {
 	{
 		File appdataDirectory = ResourceUtil.getAppdataDirectory();
 
-		File fileAppdataCurrencyList = new File(appdataDirectory.getAbsolutePath() + "/currencies.json");
+		File fileCurrencyList = new File(appdataDirectory.getAbsolutePath() + "/currencies.json");
 
-		// Check that the file exists
+		// Check that the folder exists
 		if (!appdataDirectory.exists())
 		{
 			appdataDirectory.mkdirs();
 		}
 
-		// If the file doesn't exist, create it and set it to have the
-		// default currency list
-		if (!fileAppdataCurrencyList.exists())
+		// If the file doesn't exist, throw an exception
+		if (!fileCurrencyList.exists())
 		{
 			throw new FileNotFoundException();
 		}
 
-		return fileAppdataCurrencyList;
+		return fileCurrencyList;
+
+	}
+
+	public static File getSavesList()
+	{
+		File appdataDirectory = ResourceUtil.getAppdataDirectory();
+
+		File fileSavesList = new File(appdataDirectory.getAbsolutePath() + "/saves.json");
+
+		// Check that the folder exists
+		if (!appdataDirectory.exists())
+		{
+			appdataDirectory.mkdirs();
+		}
+
+		// If the file doesn't exist, create it
+		if (!fileSavesList.exists())
+		{
+			try
+			{
+				fileSavesList.createNewFile();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
+
+		return fileSavesList;
 
 	}
 }

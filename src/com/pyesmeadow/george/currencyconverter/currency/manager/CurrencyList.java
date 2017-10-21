@@ -1,18 +1,17 @@
 package com.pyesmeadow.george.currencyconverter.currency.manager;
 
+import com.pyesmeadow.george.currencyconverter.currency.Currency;
+import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.Locale;
-
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-
-import com.pyesmeadow.george.currencyconverter.currency.Currency;
-import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 public class CurrencyList {
 
@@ -51,8 +50,7 @@ public class CurrencyList {
 	{
 		int index = this.currencies.indexOf(oldCurrency);
 
-		if (index < 0 || index >= this.currencies.size())
-			return false;
+		if (index < 0 || index >= this.currencies.size()) return false;
 
 		this.currencies.set(index, newCurrency);
 
@@ -108,20 +106,32 @@ public class CurrencyList {
 
 			currencyList.add(new Currency("USD", "US Dollar", Currency.getLocaleFromLocaleString("en_US"), 1,
 					"currency_icon/USD.png"));
-			currencyList.add(new Currency("GBP", "Great British Pound", Currency.getLocaleFromLocaleString("en_GB"),
-					1.23927, "currency_icon/GBP.png"));
+			currencyList.add(new Currency("GBP",
+					"Great British Pound",
+					Currency.getLocaleFromLocaleString("en_GB"),
+					1.23927,
+					"currency_icon/GBP.png"));
 			currencyList.add(new Currency("EUR", "Euro", Currency.getLocaleFromLocaleString("de_DE"), 1.07083,
 					"currency_icon/EUR.png"));
-			currencyList.add(new Currency("AUD", "Australian Dollar", Currency.getLocaleFromLocaleString("en_AU"),
-					0.75469, "currency_icon/AUD.png"));
-			currencyList.add(new Currency("CAD", "Canadian Dollar", Currency.getLocaleFromLocaleString("en_CA"),
-					0.76617, "currency_icon/CAD.png"));
+			currencyList.add(new Currency("AUD",
+					"Australian Dollar",
+					Currency.getLocaleFromLocaleString("en_AU"),
+					0.75469,
+					"currency_icon/AUD.png"));
+			currencyList.add(new Currency("CAD",
+					"Canadian Dollar",
+					Currency.getLocaleFromLocaleString("en_CA"),
+					0.76617,
+					"currency_icon/CAD.png"));
 			currencyList.add(new Currency("JPY", "Japanese Yen", Currency.getLocaleFromLocaleString("ja_JP"), 0.00886,
 					"currency_icon/JPY.png"));
 			currencyList.add(new Currency("CNY", "Chinese Yuan", Currency.getLocaleFromLocaleString("zh_CN"), 0.14585,
 					"currency_icon/CNY.png"));
-			currencyList.add(new Currency("KRW", "South Korean Won", Currency.getLocaleFromLocaleString("ko_KR"),
-					0.00086, "currency_icon/KRW.png"));
+			currencyList.add(new Currency("KRW",
+					"South Korean Won",
+					Currency.getLocaleFromLocaleString("ko_KR"),
+					0.00086,
+					"currency_icon/KRW.png"));
 			currencyList.add(new Currency("XBT", "Bitcoin", Currency.getLocaleFromLocaleString("en_US"), 1001.76,
 					"currency_icon/XBT.png"));
 
@@ -129,9 +139,10 @@ public class CurrencyList {
 
 			handler.writeCurrencies();
 
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
-
+			e.printStackTrace();
 		}
 	}
 
@@ -150,13 +161,7 @@ public class CurrencyList {
 
 			for (Currency currency : CurrencyList.this.currencies)
 			{
-				JSONObject currencyJSON = new JSONObject();
-
-				currencyJSON.put("id", currency.getIdentifier());
-				currencyJSON.put("name", currency.getName());
-				currencyJSON.put("locale", currency.getLocale().toString());
-				currencyJSON.put("valueInUSD", currency.getValueInUSD());
-				currencyJSON.put("iconPath", currency.getIconPath());
+				JSONObject currencyJSON = currency.serializeToJSON();
 
 				currencyListJSON.add(currencyJSON);
 			}
@@ -170,7 +175,8 @@ public class CurrencyList {
 				mainJSON.writeJSONString(writer);
 				writer.flush();
 
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
@@ -203,32 +209,25 @@ public class CurrencyList {
 
 					for (Object c : currencyListJSON)
 					{
-
 						// Cast to JSONObject
 						JSONObject currencyJSON = (JSONObject) c;
 
-						// Setup currency parameters
-						String identifier = (String) currencyJSON.get("id");
-						String name = (String) currencyJSON.get("name");
-						Locale locale = Currency.getLocaleFromLocaleString((String) currencyJSON.get("locale"));
-						double valueInUSD = (Double) currencyJSON.get("valueInUSD");
-						String iconPath = (String) currencyJSON.get("iconPath");
-
 						// Create a new Currency and add it to the list
-						Currency currency = new Currency(identifier, name, locale, valueInUSD, iconPath);
+						Currency currency = Currency.deserializeFromJSON(currencyJSON);
 						currencyList.add(currency);
-
-						CurrencyList.this.currencies = currencyList;
 					}
 
-				} catch (FileNotFoundException e)
+					CurrencyList.this.currencies = currencyList;
+				}
+				catch (FileNotFoundException e)
 				{
 					String path = ResourceUtil.getAppdataDirectory().getAbsolutePath() + "/currencies.json";
 					new File(path).createNewFile();
 					resetCurrencies();
 				}
 
-			} catch (Exception e)
+			}
+			catch (Exception e)
 			{
 				e.printStackTrace();
 			}
