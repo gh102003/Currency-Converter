@@ -3,10 +3,14 @@ package com.pyesmeadow.george.currencyconverter.main;
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontProfile;
+import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
+
+import java.awt.*;
+import java.util.List;
 
 /**
  * @author georg_000
- * @version 1.0.0
+ * @version 1.0.1
  */
 public class CurrencyConverter {
 

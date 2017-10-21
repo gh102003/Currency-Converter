@@ -168,13 +168,13 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		ArrayList<Image> iconList = new ArrayList<Image>();
 
 		Image icon16 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon16.png"));
+				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_16.png"));
 		Image icon32 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon32.png"));
+				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_32.png"));
 		Image icon64 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon64.png"));
+				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_64.png"));
 		Image icon128 = Toolkit.getDefaultToolkit()
-				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon128.png"));
+				.getImage(CurrencyConverterFrame.class.getResource("/assets/icon_128.png"));
 
 		iconList.add(icon16);
 		iconList.add(icon32);
