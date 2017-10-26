@@ -70,7 +70,7 @@ public class CurrencyConverter {
 		frame = new CurrencyConverterFrame(shouldUpdateOnStart);
 	}
 
-	public static double convertCurrency(double amount, Currency currencyFrom, Currency currencyTo)
+	static double convertCurrency(double amount, Currency currencyFrom, Currency currencyTo)
 	{
 		double currencyInUSD = amount * currencyFrom.getValueInUSD();
 		return currencyInUSD / currencyTo.getValueInUSD();
@@ -86,7 +86,7 @@ public class CurrencyConverter {
 	 *
 	 * @param fontProfile the profile to update to
 	 */
-	public static void setFontProfile(FontProfile fontProfile)
+	static void setFontProfile(FontProfile fontProfile)
 	{
 		CurrencyConverter.fontProfile = fontProfile;
 		FontUtil.updateComponentFontVariations(fontProfile, false);

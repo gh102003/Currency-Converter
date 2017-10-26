@@ -28,12 +28,10 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 
 	// Currency and save managers
 	public CurrencyManager currencyManager = new CurrencyManager();
-	// Menu bar
-	public CurrencyConverterMenuBar menuBar = new CurrencyConverterMenuBar(this);
 	// Dialogs and panels
-	public AboutDialog aboutDialog;
-	public OptionsDialog optionsDialog;
-	public CurrencyUpdater currencyUpdater;
+	AboutDialog aboutDialog;
+	OptionsDialog optionsDialog;
+	CurrencyUpdater currencyUpdater;
 	private SaveManager saveManager = new SaveManager();
 	public SavePanel panelSaves = new SavePanel(saveManager);
 	// Create main components
@@ -48,6 +46,8 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	private JPanel panelCurrencyDetails = new JPanel();
 	private JPanel panelFromCurrency = new JPanel();
 	private JPanel panelToCurrency = new JPanel();
+	// Menu bar
+	private CurrencyConverterMenuBar menuBar = new CurrencyConverterMenuBar(this);
 
 	public CurrencyConverterFrame(boolean shouldUpdateOnStart)
 	{
@@ -254,7 +254,12 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		}
 	}
 
-	public void setCurrencyDetailsVisibility(boolean visible)
+	boolean getCurrencyDetailsVisibility()
+	{
+		return panelCurrencyDetails.isVisible();
+	}
+
+	void setCurrencyDetailsVisibility(boolean visible)
 	{
 		if (!visible)
 		{
@@ -266,6 +271,16 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		}
 
 		panelCurrencyDetails.setVisible(visible);
+	}
+
+	boolean getSavesVisibility()
+	{
+		return panelSaves.isVisible();
+	}
+
+	void setSavesVisibility(boolean visible)
+	{
+		panelSaves.setVisible(visible);
 	}
 
 	/**

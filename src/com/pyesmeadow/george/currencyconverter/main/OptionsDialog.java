@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
-public class OptionsDialog extends JDialog implements ItemListener, ActionListener {
+public class OptionsDialog extends JDialog implements ActionListener {
 
 	private static final long serialVersionUID = -1768396463834050040L;
 
@@ -26,8 +26,6 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 	public static JLabel labelFontSize = new JLabel("Font size");
 
 	public static JComboBox<FontProfile> comboFontSize = new JComboBox<FontProfile>(FontProfile.values());
-
-	public static JCheckBox checkboxShowCurrencyDetails = new JCheckBox("Show currency details", true);
 
 	public OptionsDialog()
 	{
@@ -55,8 +53,6 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 		checkboxAlternativeCADFormatting.setToolTipText("Use alternative formatting when displaying Canadian Dollars, "
 				+ "like the conventions used in French-speaking parts of Canada");
 
-		checkboxShowCurrencyDetails.setToolTipText("Show details about the currencies being converted");
-
 		/* Add components to panels */
 		panelFormatting.add(checkboxAlternativeEURFormatting);
 		panelFormatting.add(checkboxAlternativeCADFormatting);
@@ -83,7 +79,6 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 
 		c.gridx = 0;
 		c.gridy = GridBagConstraints.RELATIVE;
-		panelAppearance.add(checkboxShowCurrencyDetails, c);
 
 		/* Add panels to frame */
 		add(panelFormatting);
@@ -131,7 +126,6 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 		});
 
 		comboFontSize.addActionListener(this);
-		checkboxShowCurrencyDetails.addItemListener(this);
 
 		/* Setup frame */
 		registerComponentFontVariations();
@@ -150,7 +144,6 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 
 		FontUtil.registerComponentFontVariation(labelFontSize, FontVariation.SMALL_PLAIN);
 		FontUtil.registerComponentFontVariation(comboFontSize, FontVariation.SMALL_PLAIN);
-		FontUtil.registerComponentFontVariation(checkboxShowCurrencyDetails, FontVariation.SMALL_PLAIN);
 	}
 
 	@Override
@@ -158,19 +151,6 @@ public class OptionsDialog extends JDialog implements ItemListener, ActionListen
 	{
 		if(e.getSource() == comboFontSize) {
 			CurrencyConverter.setFontProfile((FontProfile) comboFontSize.getSelectedItem());
-		}
-	}
-
-	@Override
-	public void itemStateChanged(ItemEvent e)
-	{
-		if(e.getItem() == checkboxShowCurrencyDetails) {
-			if(e.getStateChange() == ItemEvent.SELECTED) {
-				CurrencyConverter.frame.setCurrencyDetailsVisibility(true);
-			} else {
-				CurrencyConverter.frame.setCurrencyDetailsVisibility(false);
-			}
-
 		}
 	}
 }

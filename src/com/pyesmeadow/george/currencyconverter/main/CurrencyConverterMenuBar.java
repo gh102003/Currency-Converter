@@ -1,16 +1,13 @@
 package com.pyesmeadow.george.currencyconverter.main;
 
+import com.pyesmeadow.george.currencyconverter.currency.CurrencyUpdater;
+import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
+
+import javax.swing.*;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.URISyntaxException;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
-
-import com.pyesmeadow.george.currencyconverter.currency.CurrencyUpdater;
-import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 public class CurrencyConverterMenuBar extends JMenuBar {
 
@@ -18,61 +15,74 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 
 	private CurrencyConverterFrame frame;
 
-	public JMenu menuFile;
-	public JMenuItem menuItemAbout, menuItemOpenChangelog, menuItemOpenDataFolder;
+	private JMenu menuFile;
+	private JMenuItem menuItemAbout, menuItemOpenChangelog, menuItemOpenDataFolder;
 
-	public JMenu menuOptions;
-	public JMenuItem menuItemOptions, menuItemManage, menuItemUpdate;
+	private JMenu menuOptions;
+	private JMenuItem menuItemOptions, menuItemManage, menuItemUpdate;
+	private JCheckBoxMenuItem menuItemShowCurrencyDetails, menuItemShowSaves;
 
-	public CurrencyConverterMenuBar(CurrencyConverterFrame frame)
+	CurrencyConverterMenuBar(CurrencyConverterFrame frame)
 	{
 		this.frame = frame;
 
 		// File menu
-		this.menuFile = new JMenu("File");
-		this.menuItemAbout = new JMenuItem("About");
-		this.menuItemOpenChangelog = new JMenuItem("Open changelog");
-		this.menuItemOpenDataFolder = new JMenuItem("Open data folder");
+		menuFile = new JMenu("File");
+		menuItemAbout = new JMenuItem("About");
+		menuItemOpenChangelog = new JMenuItem("Open changelog");
+		menuItemOpenDataFolder = new JMenuItem("Open data folder");
 
 		// Options menu
-		this.menuOptions = new JMenu("Options");
-		this.menuItemOptions = new JMenuItem("Options");
-		this.menuItemManage = new JMenuItem("Manage currencies");
-		this.menuItemUpdate = new JMenuItem("Update currencies");
+		menuOptions = new JMenu("Options");
+		menuItemOptions = new JMenuItem("Options");
+		menuItemManage = new JMenuItem("Manage currencies");
+		menuItemUpdate = new JMenuItem("Update currencies");
+		menuItemShowCurrencyDetails = new JCheckBoxMenuItem("Show currency details");
+		menuItemShowSaves = new JCheckBoxMenuItem("Show saves");
 
-		this.add(menuFile);
+		System.out.println(CurrencyConverter.frame);
+		menuItemShowCurrencyDetails.setState(frame.getCurrencyDetailsVisibility());
+		menuItemShowSaves.setState(frame.getSavesVisibility());
+
+		add(menuFile);
 		menuFile.add(menuItemAbout);
 		menuFile.addSeparator();
 		menuFile.add(menuItemOpenChangelog);
 		menuFile.add(menuItemOpenDataFolder);
 
-		this.add(menuOptions);
+		add(menuOptions);
 		menuOptions.add(menuItemOptions);
 		menuOptions.addSeparator();
 		menuOptions.add(menuItemManage);
 		menuOptions.add(menuItemUpdate);
+		menuOptions.addSeparator();
+		menuOptions.add(menuItemShowCurrencyDetails);
+		menuOptions.add(menuItemShowSaves);
 
 		this.createListeners();
 	}
 
 	private void createListeners()
 	{
-		// ----------------------------------- FILE -----------------------------------
+		// ================================ FILE ===================================
 
-		menuItemAbout.addActionListener(l -> new AboutDialog(12));
+		menuItemAbout.addActionListener(evt -> new AboutDialog());
 
-		menuItemOpenChangelog.addActionListener(l -> {
+		// ----------------------------------------------------------------------------
+
+		menuItemOpenChangelog.addActionListener(evt ->
+		{
 
 			File fileChangelogAppdata = new File(ResourceUtil.getAppdataDirectory() + "/changelog.txt");
 			File fileChangelogDefault = null;
 
-			if(!fileChangelogAppdata.isFile())
+			if (!fileChangelogAppdata.isFile())
 			{
 				try
 				{
-					fileChangelogDefault = new File(
-							ResourceUtil.class.getClassLoader().getResource("assets/changelog.txt").toURI());
-				} catch(URISyntaxException e1)
+					fileChangelogDefault = new File(ResourceUtil.class.getClassLoader().getResource("assets/changelog.txt").toURI());
+				}
+				catch (URISyntaxException e1)
 				{
 					e1.printStackTrace();
 				}
@@ -80,7 +90,8 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 				try
 				{
 					ResourceUtil.copyFile(new FileReader(fileChangelogDefault), new FileWriter(fileChangelogAppdata));
-				} catch(Exception e1)
+				}
+				catch (Exception e1)
 				{
 					e1.printStackTrace();
 				}
@@ -89,27 +100,33 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 			ResourceUtil.openAbsoluteFile(fileChangelogAppdata.toURI());
 		});
 
-		menuItemOpenDataFolder.addActionListener(l -> {
+		menuItemOpenDataFolder.addActionListener(evt ->
+		{
 			File dataFolder = ResourceUtil.getAppdataDirectory();
 
-			if(dataFolder.exists())
+			if (dataFolder.exists())
 			{
 				ResourceUtil.openAbsoluteFile(dataFolder.toURI());
-			} else
+			}
+			else
 			{
 				dataFolder.mkdirs();
 			}
 		});
 
-		// ----------------------------------- OPTIONS -----------------------------------
+		// ================================ OPTIONS ===================================
 
-		menuItemOptions.addActionListener(l -> new OptionsDialog());
+		menuItemOptions.addActionListener(evt -> new OptionsDialog());
 
-		menuItemManage.addActionListener(l -> {
+		// ----------------------------------------------------------------------------
+
+		menuItemManage.addActionListener(evt ->
+		{
 			frame.currencyManager.openManagementDialog();
 		});
 
-		menuItemUpdate.addActionListener(l -> {
+		menuItemUpdate.addActionListener(evt ->
+		{
 
 			frame.currencyUpdater = new CurrencyUpdater(frame.currencyManager, true);
 			Thread thread = new Thread(frame.currencyUpdater, "Thread-CurrencyUpdater");
@@ -117,6 +134,18 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 
 			CurrencyConverter.frame.refreshCurrencies();
 
+		});
+
+		// ----------------------------------------------------------------------------
+
+		menuItemShowCurrencyDetails.addItemListener(evt ->
+		{
+			CurrencyConverter.frame.setCurrencyDetailsVisibility(((JCheckBoxMenuItem) evt.getSource()).getState());
+		});
+
+		menuItemShowSaves.addItemListener(evt ->
+		{
+			CurrencyConverter.frame.setSavesVisibility(((JCheckBoxMenuItem) evt.getSource()).getState());
 		});
 	}
 }

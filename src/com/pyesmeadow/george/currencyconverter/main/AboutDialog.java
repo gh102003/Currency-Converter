@@ -6,25 +6,23 @@ import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
-public class AboutDialog extends JDialog implements ActionListener {
+public class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 193595101584401663L;
 
-	public static JLabel labelInfo = new JLabel("Currency Converter " + CurrencyConverter.VERSION);
-	public static JLabel labelAuthor = new JLabel("by George Howarth");
+	private static JLabel labelInfo = new JLabel("Currency Converter " + CurrencyConverter.VERSION);
+	private static JLabel labelAuthor = new JLabel("by George Howarth");
 
-	public static JLabel labelCopyright = new JLabel("\u00A9 George Howarth 2017");
-	public static JLabel labelCopyright2 = new JLabel("All rights reserved");
+	private static JLabel labelCopyright = new JLabel("\u00A9 George Howarth 2017");
+	private static JLabel labelCopyright2 = new JLabel("All rights reserved");
 
-	public static JLabel labelDataPath = new JLabel("Data path: " + ResourceUtil.getAppdataDirectory());
+	private static JLabel labelDataPath = new JLabel("Data path: " + ResourceUtil.getAppdataDirectory());
 
-	public static JPanel panelNavigation = new JPanel();
-	public static JButton btnClose = new JButton("Close");
+	private static JPanel panelNavigation = new JPanel();
+	private static JButton btnClose = new JButton("Close");
 
-	public AboutDialog(float fontSize)
+	AboutDialog()
 	{
 
 		// Panel setup
@@ -57,7 +55,10 @@ public class AboutDialog extends JDialog implements ActionListener {
 
 		btnClose.setAlignmentX(CENTER_ALIGNMENT);
 
-		btnClose.addActionListener(this);
+		btnClose.addActionListener(evt ->
+		{
+			dispose();
+		});
 
 		/* Setup frame */
 		registerComponentFontVariations();
@@ -69,7 +70,7 @@ public class AboutDialog extends JDialog implements ActionListener {
 		setVisible(true);
 	}
 
-	public void registerComponentFontVariations()
+	private void registerComponentFontVariations()
 	{
 		FontUtil.registerComponentFontVariation(labelInfo, FontVariation.MEDIUM_BOLD);
 		FontUtil.registerComponentFontVariation(labelAuthor, FontVariation.MEDIUM_PLAIN);
@@ -79,11 +80,4 @@ public class AboutDialog extends JDialog implements ActionListener {
 
 		FontUtil.registerComponentFontVariation(btnClose, FontVariation.MEDIUM_PLAIN);
 	}
-
-	@Override
-	public void actionPerformed(ActionEvent e)
-	{
-		dispose();
-	}
-
 }
