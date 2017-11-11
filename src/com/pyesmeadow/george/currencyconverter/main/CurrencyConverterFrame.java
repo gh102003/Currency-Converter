@@ -326,16 +326,6 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		panelCurrencyDetailsContainer.updateShownCurrencyPanels(getFromCurrencyID(), getToCurrencyID());
 	}
 
-	boolean isAboutDialogOpen()
-	{
-		if (!aboutDialog.isVisible())
-		{
-			aboutDialog = null;
-		}
-
-		return aboutDialog != null;
-	}
-
 	protected void registerComponentFontVariations()
 	{
 		// panelConversion
@@ -359,6 +349,11 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		}
 	}
 
+	boolean isAboutDialogOpen()
+	{
+		return aboutDialog != null && aboutDialog.isVisible();
+	}
+
 	public void setAboutDialog(AboutDialog aboutDialog)
 	{
 		this.aboutDialog = aboutDialog;
@@ -367,6 +362,11 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	public void setCurrencyUpdater(CurrencyUpdater currencyUpdater)
 	{
 		this.currencyUpdater = currencyUpdater;
+	}
+
+	boolean isCurrencyUpdaterOpen()
+	{
+		return currencyUpdater != null && currencyUpdater.isVisible();
 	}
 
 	protected void addListeners()
