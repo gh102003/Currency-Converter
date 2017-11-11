@@ -5,6 +5,7 @@ import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontProfile;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
+import javax.swing.*;
 import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -32,6 +33,17 @@ public class CurrencyConverter {
 
 	public static void main(String[] args)
 	{
+		// Set L&F
+		try
+		{
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+
+		// Handle args
 		boolean shouldUpdateOnStart = true;
 
 		for (String arg : args)

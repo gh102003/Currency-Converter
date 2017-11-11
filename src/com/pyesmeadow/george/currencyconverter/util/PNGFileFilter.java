@@ -1,10 +1,7 @@
-package com.pyesmeadow.george.currencyconverter.main;
-
-import java.io.File;
+package com.pyesmeadow.george.currencyconverter.util;
 
 import javax.swing.filechooser.FileFilter;
-
-import com.pyesmeadow.george.currencyconverter.util.Util;
+import java.io.File;
 
 public class PNGFileFilter extends FileFilter {
 

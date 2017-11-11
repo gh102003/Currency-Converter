@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.URISyntaxException;
+import java.util.List;
 
 public class CurrencyConverterMenuBar extends JMenuBar {
 
@@ -19,8 +20,7 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 	private JMenuItem menuItemAbout, menuItemOpenChangelog, menuItemOpenDataFolder;
 
 	private JMenu menuOptions;
-	private JMenuItem menuItemOptions, menuItemManage, menuItemUpdate;
-	private JCheckBoxMenuItem menuItemShowCurrencyDetails, menuItemShowSaves;
+	private JMenuItem menuItemManage, menuItemUpdate;
 
 	CurrencyConverterMenuBar(CurrencyConverterFrame frame)
 	{
@@ -34,15 +34,8 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 
 		// Options menu
 		menuOptions = new JMenu("Options");
-		menuItemOptions = new JMenuItem("Options");
 		menuItemManage = new JMenuItem("Manage currencies");
 		menuItemUpdate = new JMenuItem("Update currencies");
-		menuItemShowCurrencyDetails = new JCheckBoxMenuItem("Show currency details");
-		menuItemShowSaves = new JCheckBoxMenuItem("Show saves");
-
-		System.out.println(CurrencyConverter.frame);
-		menuItemShowCurrencyDetails.setState(frame.getCurrencyDetailsVisibility());
-		menuItemShowSaves.setState(frame.getSavesVisibility());
 
 		add(menuFile);
 		menuFile.add(menuItemAbout);
@@ -51,22 +44,24 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 		menuFile.add(menuItemOpenDataFolder);
 
 		add(menuOptions);
-		menuOptions.add(menuItemOptions);
-		menuOptions.addSeparator();
 		menuOptions.add(menuItemManage);
 		menuOptions.add(menuItemUpdate);
 		menuOptions.addSeparator();
-		menuOptions.add(menuItemShowCurrencyDetails);
-		menuOptions.add(menuItemShowSaves);
 
-		this.createListeners();
+		createListeners();
 	}
 
 	private void createListeners()
 	{
 		// ================================ FILE ===================================
 
-		menuItemAbout.addActionListener(evt -> new AboutDialog());
+		menuItemAbout.addActionListener(evt ->
+		{
+			if (!frame.isAboutDialogOpen())
+			{
+				frame.setAboutDialog(new AboutDialog());
+			}
+		});
 
 		// ----------------------------------------------------------------------------
 
@@ -116,10 +111,6 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 
 		// ================================ OPTIONS ===================================
 
-		menuItemOptions.addActionListener(evt -> new OptionsDialog());
-
-		// ----------------------------------------------------------------------------
-
 		menuItemManage.addActionListener(evt ->
 		{
 			frame.currencyManager.openManagementDialog();
@@ -127,25 +118,49 @@ public class CurrencyConverterMenuBar extends JMenuBar {
 
 		menuItemUpdate.addActionListener(evt ->
 		{
+			CurrencyUpdater currencyUpdater = new CurrencyUpdater(frame.currencyManager, true);
 
-			frame.currencyUpdater = new CurrencyUpdater(frame.currencyManager, true);
-			Thread thread = new Thread(frame.currencyUpdater, "Thread-CurrencyUpdater");
+			frame.setCurrencyUpdater(currencyUpdater);
+			Thread thread = new Thread(currencyUpdater, "Thread-CurrencyUpdater");
 			thread.start();
 
-			CurrencyConverter.frame.refreshCurrencies();
+			frame.refreshCurrencies();
 
 		});
 
 		// ----------------------------------------------------------------------------
 
-		menuItemShowCurrencyDetails.addItemListener(evt ->
-		{
-			CurrencyConverter.frame.setCurrencyDetailsVisibility(((JCheckBoxMenuItem) evt.getSource()).getState());
-		});
+		// Toggle components should be inserted here
+	}
 
-		menuItemShowSaves.addItemListener(evt ->
+	void addToggleableComponentMenuItems(List<IToggleableComponent> toggleableComponents)
+	{
+		toggleableComponents.forEach(this::addToggleableComponentMenuItem);
+	}
+
+	private void addToggleableComponentMenuItem(IToggleableComponent toggleableComponent)
+	{
+		String componentID = toggleableComponent.getID();
+		JCheckBoxMenuItem menuItem = new JCheckBoxMenuItem("Show " + componentID);
+		menuItem.setState(toggleableComponent.getComponent().isVisible());
+		menuOptions.add(menuItem);
+
+		// Add action listener to menu item
+		menuItem.addActionListener(evt ->
 		{
-			CurrencyConverter.frame.setSavesVisibility(((JCheckBoxMenuItem) evt.getSource()).getState());
+			// Get the state of the checkbox
+			boolean willBeVisible = ((JCheckBoxMenuItem) evt.getSource()).getState();
+
+			// Get all components with the correct id
+			List<IToggleableComponent> componentsToToggle = frame.getToggleableComponentsByID(componentID);
+
+			// Toggle components
+			componentsToToggle.forEach(componentToToggle ->
+			{
+				componentToToggle.getComponent().setVisible(willBeVisible);
+			});
+
+			frame.updateHeight();
 		});
 	}
 }

@@ -81,14 +81,15 @@ public class CurrencyManagerDialog extends JDialog {
 		this.registerComponentFontVariations();
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 
-		this.createListeners();
+		createListeners();
 
-		this.setSize(new Dimension(380, 500));
-		this.setMinimumSize(new Dimension(380, 400));
-		this.setMaximumSize(new Dimension(600, 600));
-		this.setTitle("Manage Currencies");
-		this.setIconImages(CurrencyConverter.APP_ICONS);
-		this.setVisible(true);
+		setSize(new Dimension(380, 500));
+		setMinimumSize(new Dimension(380, 400));
+		setMaximumSize(new Dimension(600, 600));
+		setTitle("Manage Currencies");
+		setIconImages(CurrencyConverter.APP_ICONS);
+		setVisible(true);
+		setLocationRelativeTo(null);
 	}
 
 	protected void createListeners()

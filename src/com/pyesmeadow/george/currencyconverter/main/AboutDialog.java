@@ -66,8 +66,8 @@ public class AboutDialog extends JDialog {
 		setTitle("About");
 		setIconImages(CurrencyConverter.APP_ICONS);
 		setSize(580, 300);
-		// setResizable(false);
 		setVisible(true);
+		setLocationRelativeTo(null);
 	}
 
 	private void registerComponentFontVariations()

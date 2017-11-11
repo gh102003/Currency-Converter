@@ -11,7 +11,7 @@ import java.awt.*;
 
 class SaveInfoDialog extends JDialog {
 
-	private final Save SAVE;
+	private Save SAVE;
 
 	private final CurrencyDetailsPanel panelFromCurrency;
 	private final JLabel labelFromAmount;
@@ -19,7 +19,7 @@ class SaveInfoDialog extends JDialog {
 	private final CurrencyDetailsPanel panelToCurrency;
 	private final JLabel labelToAmount;
 
-	SaveInfoDialog(final Save save)
+	SaveInfoDialog(Save save)
 	{
 		this.SAVE = save;
 
@@ -58,6 +58,7 @@ class SaveInfoDialog extends JDialog {
 		setIconImages(CurrencyConverter.APP_ICONS);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Save info");
+		setLocationRelativeTo(null);
 		pack();
 		revalidate();
 		setVisible(true);

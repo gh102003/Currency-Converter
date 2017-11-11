@@ -13,8 +13,8 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 
 	private static final long serialVersionUID = 4510480362783863522L;
 
-	public JLabel labelMainStatus = new JLabel("Updating currencies...");
-	public JPanel panelStatus = new JPanel();
+	private JLabel labelMainStatus = new JLabel("Updating currencies...");
+	private JPanel panelStatus = new JPanel();
 
 	private CurrencyManager currencyManager;
 
@@ -51,6 +51,7 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 		setIconImages(CurrencyConverter.APP_ICONS);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		setVisible(true);
+		setLocationRelativeTo(null);
 	}
 
 	private void registerComponentFontVariations()

@@ -2,7 +2,7 @@ package com.pyesmeadow.george.currencyconverter.currency.manager;
 
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
-import com.pyesmeadow.george.currencyconverter.main.PNGFileFilter;
+import com.pyesmeadow.george.currencyconverter.util.PNGFileFilter;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 
 import javax.swing.*;

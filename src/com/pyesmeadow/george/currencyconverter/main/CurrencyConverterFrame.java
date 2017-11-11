@@ -1,7 +1,7 @@
 package com.pyesmeadow.george.currencyconverter.main;
 
 import com.pyesmeadow.george.currencyconverter.currency.Currency;
-import com.pyesmeadow.george.currencyconverter.currency.CurrencyDetailsPanel;
+import com.pyesmeadow.george.currencyconverter.currency.CurrencyDetailsContainerPanel;
 import com.pyesmeadow.george.currencyconverter.currency.CurrencyUpdater;
 import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyList;
 import com.pyesmeadow.george.currencyconverter.currency.manager.CurrencyManager;
@@ -17,49 +17,43 @@ import java.awt.*;
 import java.awt.event.*;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemListener {
 
 	private static final long serialVersionUID = 3584042683319202624L;
-	private static final Dimension DEFAULT_SIZE = new Dimension(600, 520);
-	private static final Dimension MINIMUM_SIZE = new Dimension(600, 500);
-	private static final Dimension COLLAPSED_MINIMUM_SIZE = new Dimension(600, 250);
+	private static final int CORE_HEIGHT = 125;
+	private static final int WIDTH = 600;
 
 	// Currency and save managers
 	public CurrencyManager currencyManager = new CurrencyManager();
+
 	// Dialogs and panels
-	AboutDialog aboutDialog;
-	OptionsDialog optionsDialog;
-	CurrencyUpdater currencyUpdater;
+	private AboutDialog aboutDialog;
+	private CurrencyUpdater currencyUpdater;
+
+	// Toggleable components
+	private List<IToggleableComponent> toggleableComponents = new ArrayList<>();
 	private SaveManager saveManager = new SaveManager();
 	public SavePanel panelSaves = new SavePanel(saveManager);
 	// Create main components
 	private JPanel panelConversion = new JPanel();
-	private JComboBox<String> comboFromCurrency = new JComboBox<String>();
+	private JComboBox<String> comboFromCurrency = new JComboBox<>();
 	private JTextField fieldFromCurrencyAmount = new JTextField(8);
 	private JLabel labelEquals = new JLabel("=");
-	private JComboBox<String> comboToCurrency = new JComboBox<String>();
+	private JComboBox<String> comboToCurrency = new JComboBox<>();
 	private JLabel labelToCurrencyAmount = new JLabel("      ");
 	private JButton btnSave = new JButton("Save");
 	// Create currency details components
-	private JPanel panelCurrencyDetails = new JPanel();
-	private JPanel panelFromCurrency = new JPanel();
-	private JPanel panelToCurrency = new JPanel();
+	private CurrencyDetailsContainerPanel panelCurrencyDetailsContainer = new CurrencyDetailsContainerPanel();
 	// Menu bar
 	private CurrencyConverterMenuBar menuBar = new CurrencyConverterMenuBar(this);
 
-	public CurrencyConverterFrame(boolean shouldUpdateOnStart)
+	CurrencyConverterFrame(boolean shouldUpdateOnStart)
 	{
-		try
-		{
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
-
 		Thread thread = null;
 
 		if (shouldUpdateOnStart)
@@ -78,15 +72,6 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		panelConversion.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 		panelConversion.setAlignmentX(CENTER_ALIGNMENT);
 		panelConversion.setMaximumSize(new Dimension(800, 35));
-
-		panelFromCurrency.setLayout(new CardLayout());
-		panelFromCurrency.setBorder(BorderFactory.createTitledBorder("From Currency"));
-
-		panelToCurrency.setLayout(new CardLayout());
-		panelToCurrency.setBorder(BorderFactory.createTitledBorder("To Currency"));
-
-		panelCurrencyDetails.setBorder(BorderFactory.createTitledBorder("Currency Details"));
-		panelSaves.setBorder(BorderFactory.createTitledBorder("Saves"));
 
 		// Setup components
 		fieldFromCurrencyAmount.setMinimumSize(new Dimension(80, 35));
@@ -124,11 +109,6 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		}
 		addCurrencies(currencyManager.getCurrencyList());
 
-		panelCurrencyDetails.setLayout(new BoxLayout(panelCurrencyDetails, BoxLayout.LINE_AXIS));
-
-		panelCurrencyDetails.add(panelFromCurrency);
-		panelCurrencyDetails.add(panelToCurrency);
-
 		// Add panels and components to frame
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
@@ -137,10 +117,11 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		c.weightx = 0.1;
 
 		add(panelConversion, c);
-		add(panelCurrencyDetails, c);
-		c.fill = GridBagConstraints.BOTH;
-		c.weighty = 1;
-		add(panelSaves, c);
+
+		// Toggleable components
+		toggleableComponents.add(panelCurrencyDetailsContainer);
+		toggleableComponents.add(panelSaves);
+		registerToggleableComponents();
 
 		// Set font size
 		registerComponentFontVariations();
@@ -167,13 +148,43 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		// Set frame parameters
 		this.setJMenuBar(this.menuBar);
 
-		setLocationRelativeTo(null);
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setSize(CurrencyConverterFrame.DEFAULT_SIZE);
-		setMinimumSize(CurrencyConverterFrame.MINIMUM_SIZE);
 		updateConversion();
-		setVisible(true);
 		pack();
+		updateHeight();
+		setLocationRelativeTo(null);
+		setVisible(true);
+	}
+
+	public List<IToggleableComponent> getToggleableComponentsWithPredicate(Predicate<IToggleableComponent> predicate)
+	{
+		return toggleableComponents.stream().filter(predicate).collect(Collectors.toList());
+	}
+
+	public List<IToggleableComponent> getToggleableComponentsByID(String id)
+	{
+		return getToggleableComponentsWithPredicate(component -> component.getID().equals(id));
+	}
+
+	public List<IToggleableComponent> getToggleableComponents()
+	{
+		return toggleableComponents;
+	}
+
+	private void registerToggleableComponents()
+	{
+		for (IToggleableComponent component : toggleableComponents)
+		{
+			GridBagConstraints c = component.getGridBagConstraints();
+			c.gridx = 0;
+			c.gridy = GridBagConstraints.RELATIVE;
+
+			component.getComponent().setBorder(BorderFactory.createTitledBorder(component.getID()));
+
+			add(component.getComponent(), c);
+		}
+
+		menuBar.addToggleableComponentMenuItems(toggleableComponents);
 	}
 
 	public void updateConversion()
@@ -204,6 +215,26 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		}
 	}
 
+	private String getFromCurrencyID()
+	{
+		return (String) comboFromCurrency.getSelectedItem();
+	}
+/*
+	public Currency getFromCurrency()
+	{
+		return currencyManager.getCurrencyList().getCurrencyFromID(getFromCurrencyID());
+	}*/
+
+	private String getToCurrencyID()
+	{
+		return (String) comboToCurrency.getSelectedItem();
+	}
+/*
+	public Currency getToCurrency()
+	{
+		return currencyManager.getCurrencyList().getCurrencyFromID(getToCurrencyID());
+	}*/
+
 	private void swapCurrencies()
 	{
 		String prevFrom = (String) comboFromCurrency.getSelectedItem();
@@ -231,58 +262,6 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		updateConversion();
 	}
 
-	protected void registerComponentFontVariations()
-	{
-		// panelConversion
-		if (!Util.isRunningOnMac())
-		{
-			FontUtil.registerComponentFontVariation(comboFromCurrency, FontVariation.LARGE_PLAIN);
-			FontUtil.registerComponentFontVariation(fieldFromCurrencyAmount, FontVariation.LARGE_PLAIN);
-			FontUtil.registerComponentFontVariation(labelEquals, FontVariation.LARGE_PLAIN);
-			FontUtil.registerComponentFontVariation(comboToCurrency, FontVariation.LARGE_PLAIN);
-			FontUtil.registerComponentFontVariation(labelToCurrencyAmount, FontVariation.LARGE_SYMBOL);
-			FontUtil.registerComponentFontVariation(btnSave, FontVariation.LARGE_PLAIN);
-		}
-		else
-		{
-			FontUtil.registerComponentFontVariation(comboFromCurrency, FontVariation.SMALL_PLAIN);
-			FontUtil.registerComponentFontVariation(fieldFromCurrencyAmount, FontVariation.SMALL_PLAIN);
-			FontUtil.registerComponentFontVariation(labelEquals, FontVariation.SMALL_PLAIN);
-			FontUtil.registerComponentFontVariation(comboToCurrency, FontVariation.SMALL_PLAIN);
-			FontUtil.registerComponentFontVariation(labelToCurrencyAmount, FontVariation.SMALL_PLAIN);
-			FontUtil.registerComponentFontVariation(btnSave, FontVariation.SMALL_PLAIN);
-		}
-	}
-
-	boolean getCurrencyDetailsVisibility()
-	{
-		return panelCurrencyDetails.isVisible();
-	}
-
-	void setCurrencyDetailsVisibility(boolean visible)
-	{
-		if (!visible)
-		{
-			setMinimumSize(COLLAPSED_MINIMUM_SIZE);
-		}
-		else
-		{
-			setMinimumSize(MINIMUM_SIZE);
-		}
-
-		panelCurrencyDetails.setVisible(visible);
-	}
-
-	boolean getSavesVisibility()
-	{
-		return panelSaves.isVisible();
-	}
-
-	void setSavesVisibility(boolean visible)
-	{
-		panelSaves.setVisible(visible);
-	}
-
 	/**
 	 * Removes and re-adds the contents of the combo boxes and the currency
 	 * details panels. Updates conversion.
@@ -292,10 +271,23 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		comboFromCurrency.removeAllItems();
 		comboToCurrency.removeAllItems();
 
-		panelFromCurrency.removeAll();
-		panelToCurrency.removeAll();
-
 		this.addCurrencies(this.currencyManager.getCurrencyList());
+	}
+
+	void updateHeight()
+	{
+		int minimumHeight = CORE_HEIGHT;
+		int defaultHeight = CORE_HEIGHT;
+
+		List<IToggleableComponent> toggleableComponentsWithPredicate = this.getToggleableComponentsWithPredicate(component -> component.getComponent().isVisible());
+		for (IToggleableComponent component : toggleableComponentsWithPredicate)
+		{
+			minimumHeight += component.getMinimumHeight();
+			defaultHeight += component.getDefaultHeight();
+		}
+
+		setMinimumSize(new Dimension(WIDTH, minimumHeight));
+		setSize(new Dimension(WIDTH, defaultHeight));
 	}
 
 	/**
@@ -330,40 +322,51 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		}
 
 		// Add currency details panels
-		this.addDetailsPanels();
-
-		this.updateShownCurrencyPanels();
+		panelCurrencyDetailsContainer.refreshDetailsPanels(currencyList);
+		panelCurrencyDetailsContainer.updateShownCurrencyPanels(getFromCurrencyID(), getToCurrencyID());
 	}
 
-	private void addDetailsPanels()
+	boolean isAboutDialogOpen()
 	{
-		// Remove panels
-		panelFromCurrency.removeAll();
-		panelToCurrency.removeAll();
-
-		// Add panels
-		for (Currency currency : currencyManager.getCurrencyList().getCurrencies())
+		if (!aboutDialog.isVisible())
 		{
-			JPanel panel = new CurrencyDetailsPanel(currency, 128);
-			panelFromCurrency.add(panel, currency.getIdentifier());
-
-			panel = new CurrencyDetailsPanel(currency, 128);
-			panelToCurrency.add(panel, currency.getIdentifier());
+			aboutDialog = null;
 		}
 
-		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
-
-		this.updateShownCurrencyPanels();
-
-		this.updateConversion();
+		return aboutDialog != null;
 	}
 
-	private void updateShownCurrencyPanels()
+	protected void registerComponentFontVariations()
 	{
-		CardLayout cl = (CardLayout) panelFromCurrency.getLayout();
-		cl.show(panelFromCurrency, (String) comboFromCurrency.getSelectedItem());
-		cl = (CardLayout) panelToCurrency.getLayout();
-		cl.show(panelToCurrency, (String) comboToCurrency.getSelectedItem());
+		// panelConversion
+		if (!Util.isRunningOnMac())
+		{
+			FontUtil.registerComponentFontVariation(comboFromCurrency, FontVariation.LARGE_PLAIN);
+			FontUtil.registerComponentFontVariation(fieldFromCurrencyAmount, FontVariation.LARGE_PLAIN);
+			FontUtil.registerComponentFontVariation(labelEquals, FontVariation.LARGE_PLAIN);
+			FontUtil.registerComponentFontVariation(comboToCurrency, FontVariation.LARGE_PLAIN);
+			FontUtil.registerComponentFontVariation(labelToCurrencyAmount, FontVariation.LARGE_SYMBOL);
+			FontUtil.registerComponentFontVariation(btnSave, FontVariation.LARGE_PLAIN);
+		}
+		else
+		{
+			FontUtil.registerComponentFontVariation(comboFromCurrency, FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(fieldFromCurrencyAmount, FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(labelEquals, FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(comboToCurrency, FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(labelToCurrencyAmount, FontVariation.SMALL_PLAIN);
+			FontUtil.registerComponentFontVariation(btnSave, FontVariation.SMALL_PLAIN);
+		}
+	}
+
+	public void setAboutDialog(AboutDialog aboutDialog)
+	{
+		this.aboutDialog = aboutDialog;
+	}
+
+	public void setCurrencyUpdater(CurrencyUpdater currencyUpdater)
+	{
+		this.currencyUpdater = currencyUpdater;
 	}
 
 	protected void addListeners()
@@ -440,7 +443,7 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		{
 			updateConversion();
 
-			updateShownCurrencyPanels();
+			panelCurrencyDetailsContainer.updateShownCurrencyPanels(getFromCurrencyID(), getToCurrencyID());
 		}
 	}
 

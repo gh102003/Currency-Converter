@@ -1,6 +1,7 @@
 package com.pyesmeadow.george.currencyconverter.save.gui;
 
 import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
+import com.pyesmeadow.george.currencyconverter.main.IToggleableComponent;
 import com.pyesmeadow.george.currencyconverter.save.Save;
 import com.pyesmeadow.george.currencyconverter.save.SaveManager;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
@@ -10,7 +11,7 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-public class SavePanel extends JPanel {
+public class SavePanel extends JPanel implements IToggleableComponent {
 
 	private final JPanel panelSaves = new JPanel(new GridBagLayout());
 	private final JScrollPane scrollPaneSaves = new JScrollPane(panelSaves,
@@ -67,6 +68,33 @@ public class SavePanel extends JPanel {
 		revalidate();
 	}
 
+	@Override
+	public int getMinimumHeight()
+	{
+		return 100;
+	}
+
+	@Override
+	public int getDefaultHeight()
+	{
+		return 180;
+	}
+
+	@Override
+	public String getID()
+	{
+		return "Saves";
+	}
+
+	@Override
+	public GridBagConstraints getGridBagConstraints()
+	{
+		GridBagConstraints c = IToggleableComponent.super.getGridBagConstraints();
+		c.fill = GridBagConstraints.BOTH;
+		c.weighty = 1;
+		return c;
+	}
+
 	private class SavePanelEntry extends JPanel {
 
 		private final JLabel labelFromCurrency;
@@ -81,7 +109,7 @@ public class SavePanel extends JPanel {
 		// For reference only
 		private final Save save;
 
-		public SavePanelEntry(Save save)
+		SavePanelEntry(Save save)
 		{
 			this.save = save;
 

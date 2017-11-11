@@ -1,7 +1,6 @@
 package com.pyesmeadow.george.currencyconverter.currency;
 
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
-import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 import com.pyesmeadow.george.currencyconverter.util.Util;
 
@@ -11,22 +10,20 @@ import java.awt.*;
 public class CurrencyDetailsPanel extends JPanel {
 
 	private static final long serialVersionUID = 6454486646470504024L;
-
-	public Currency currency;
-
 	private final JLabel labelCurrencyName;
 	private final JLabel labelCurrencyValue;
 	private final JLabel labelCurrencyIcon;
+	public Currency currency;
 
 	public CurrencyDetailsPanel(Currency currency, int iconSize)
 	{
-		/* Set layout of the panel */
+			/* Set layout of the panel */
 		setLayout(new GridBagLayout());
 
-		/* Save currency */
+			/* Save currency */
 		this.currency = currency;
 
-		/* Create components */
+			/* Create components */
 		labelCurrencyName = new JLabel(currency.getName() + " (" + currency.getIdentifier() + ")");
 
 		labelCurrencyValue = new JLabel("Value in US Dollars: " + Util.getUSDFormatting().format(currency.getValueInUSD()));
@@ -39,7 +36,7 @@ public class CurrencyDetailsPanel extends JPanel {
 
 		labelCurrencyIcon.setBorder(BorderFactory.createEmptyBorder(borderSize, borderSize, borderSize, borderSize));
 
-		/* Setup GridBagConstraints */
+			/* Setup GridBagConstraints */
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = GridBagConstraints.RELATIVE;
@@ -52,15 +49,15 @@ public class CurrencyDetailsPanel extends JPanel {
 		c.insets = new Insets(8, 8, 8, 8);
 		add(labelCurrencyIcon, c);
 
-		/* Setup panel */
+			/* Setup panel */
 		registerComponentFontVariations();
 		setPreferredSize(new Dimension(250, 82 + iconSize));
 		setMaximumSize(new Dimension(250, 82 + iconSize));
 	}
 
-	public void registerComponentFontVariations()
+	protected void registerComponentFontVariations()
 	{
-		FontUtil.registerComponentFontVariation(labelCurrencyName, FontVariation.SMALL_BOLD);
-		FontUtil.registerComponentFontVariation(labelCurrencyValue, FontVariation.SMALL_PLAIN);
+		FontUtil.registerComponentFontVariation(labelCurrencyName, FontUtil.FontVariation.SMALL_BOLD);
+		FontUtil.registerComponentFontVariation(labelCurrencyValue, FontUtil.FontVariation.SMALL_PLAIN);
 	}
 }
