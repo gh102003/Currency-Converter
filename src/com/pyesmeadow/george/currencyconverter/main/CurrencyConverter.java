@@ -14,11 +14,10 @@ import java.util.List;
 
 /**
  * @author georg_000
- * @version 1.0.1
  */
 public class CurrencyConverter {
 
-	public static final String VERSION = "1.0.0";
+	public static final String VERSION = "1.3.0";
 	public static CurrencyConverterFrame frame;
 	// Icons
 	public static Image ADD_ICON;

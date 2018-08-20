@@ -5,9 +5,13 @@ import com.pyesmeadow.george.currencyconverter.main.CurrencyConverter;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil;
 import com.pyesmeadow.george.currencyconverter.util.FontUtil.FontVariation;
 import com.pyesmeadow.george.currencyconverter.util.HTTPUtil;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
+import java.io.IOException;
 
 public class CurrencyUpdater extends JDialog implements Runnable {
 
@@ -65,11 +69,11 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 	 */
 	public void updateCurrencies()
 	{
-
 		int failureCount = 0;
 
 		for (Currency c : currencyManager.getCurrencyList().getCurrencies())
 		{
+			if (c.getIdentifier().equals("USD")) continue; // Skip updating USD because its value will always be 1
 			if (!updateCurrency(c))
 			{
 				failureCount++;
@@ -95,28 +99,28 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 	 * @param currency
 	 *            currency to update
 	 *
-	 * @return true if update succesful, false if unsuccesful
+	 * @return true if update successful, false if unsuccessful
 	 */
 	private boolean updateCurrency(Currency currency)
 	{
 		try
 		{
-			String conversionHTML = HTTPUtil
-					.sendPostRequest("http://www.xe.com/currencyconverter/convert/?Amount=1&From=EUR&To=USD",
-							"Amount=1", "From=" + currency.getIdentifier(), "To=USD")
-					.toString();
+			// Get currency data from API
+			String url = String.format("https://free.currencyconverterapi.com/api/v6/convert?q=%s_USD&compact=ultra",
+					currency.getIdentifier());
+			String updateData = HTTPUtil.sendGetRequest(url).toString(); // JSON file
 
-			// Trim to value
-			String a = conversionHTML.split("uccResultAmount\'>")[1];
-			String b = a.split("</span>")[0];
+			// Parse currency data
+			var parser = new JSONParser();
+			JSONObject updateJSON = (JSONObject) parser.parse(updateData);
+			Object valueFromData = updateJSON.get(currency.getIdentifier() + "_USD");
 
-			// Check for an invalid currency identifier
-			if (b.equals("0.00"))
+			if (valueFromData == null)
 			{
-				throw new IllegalArgumentException(currency.getIdentifier() + " is not a valid currency identifier.");
+				throw new IllegalArgumentException("Currency " + currency.getIdentifier() + " is not valid");
 			}
 
-			double currencyValue = Double.parseDouble(b.replaceAll(",", ""));
+			double currencyValue = (double) valueFromData;
 
 			// Print and set value
 			System.out.println(currency.getIdentifier() + " value: " + currencyValue);
@@ -131,12 +135,12 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 			validate();
 
 			return true;
-
-		} catch (Exception e)
+		}
+		catch (ParseException | IllegalArgumentException | IOException e)
 		{
 			e.printStackTrace();
 
-			System.err.println("Error connecting to server. Could not update value of " + currency.getName());
+			System.err.println("Could not update value of " + currency.getName());
 
 			// Add status label
 			JLabel label = new JLabel("Could not update value for the " + currency.getName());

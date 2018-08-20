@@ -4,9 +4,8 @@ import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 import org.json.simple.JSONObject;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.File;
-import java.net.URL;
+import java.io.FileNotFoundException;
 import java.text.NumberFormat;
 import java.util.Locale;
 
@@ -128,30 +127,28 @@ public class Currency {
 	public ImageIcon getIcon()
 	{
 		String iconPathAppdata = ResourceUtil.getAppdataDirectory() + "/" + iconPath;
-		URL iconPathResources = ResourceUtil.class.getClassLoader().getResource("assets/" + iconPath);
-		URL iconPathUnknown = ResourceUtil.class.getClassLoader().getResource("assets/currency_icon/unknown.png");
 
 		if (new File(iconPathAppdata).exists() && new File(iconPathAppdata).isFile())
 		{
-
 			return new ImageIcon(iconPathAppdata);
 		}
 
 		try
 		{
-			if (new File(iconPathResources.toURI().getPath()).canRead() && new File(iconPathResources.toURI().getPath()).isFile())
+			return new ImageIcon(ResourceUtil.getImage("assets/" + iconPath));
+		}
+		catch (FileNotFoundException e)
+		{
+			System.err.println(this.name + " has no image");
+			try
 			{
-
-				return new ImageIcon(Toolkit.getDefaultToolkit().getImage(iconPathResources));
-
+				return new ImageIcon(ResourceUtil.getImage("assets/currency_icon/unknown.png"));
+			}
+			catch (FileNotFoundException e1)
+			{
+				return null;
 			}
 		}
-		catch (Exception e)
-		{
-		}
-
-		System.err.println(this.name + " has no image.");
-		return new ImageIcon(Toolkit.getDefaultToolkit().getImage(iconPathUnknown));
 	}
 
 	public Locale getLocale()

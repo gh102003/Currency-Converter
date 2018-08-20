@@ -1,8 +1,6 @@
 package com.pyesmeadow.george.currencyconverter.util;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -12,14 +10,13 @@ public class HTTPUtil {
 
 	/**
 	 * Sends a HTTP GET request to a specified url.
-	 * 
-	 * @param url
-	 *            the URL to send a request to
-	 * @return
-	 * @throws Exception
+	 *
+	 * @param url the URL to send a request to
+	 * @return response from the request
+	 * @throws IOException if there was an error with the URL or the response
 	 */
-	public static StringBuffer sendGetRequest(String url) throws Exception {
-
+	public static StringBuffer sendGetRequest(String url) throws IOException
+	{
 		URL connectionURL = new URL(url);
 		HttpURLConnection connection = (HttpURLConnection) connectionURL.openConnection();
 
@@ -34,7 +31,8 @@ public class HTTPUtil {
 		StringBuffer response = new StringBuffer();
 
 		/* Add lines to response */
-		while ((inputLine = in.readLine()) != null) {
+		while ((inputLine = in.readLine()) != null)
+		{
 			response.append(inputLine);
 		}
 		in.close();
@@ -44,14 +42,14 @@ public class HTTPUtil {
 
 	/**
 	 * Sends a HTTP POST request to a specified url with parameters.
-	 * 
-	 * @param url
-	 *            the URL to send a request to
-	 * @param parameters
+	 *
+	 * @param url the URL to send a request to
+	 * @param parameters POST parameters
 	 * @return
 	 * @throws Exception
 	 */
-	public static StringBuffer sendPostRequest(String url, String... parameters) throws Exception {
+	public static StringBuffer sendPostRequest(String url, String... parameters) throws Exception
+	{
 
 		/* Create connection */
 		URL obj = new URL(url);
@@ -59,7 +57,8 @@ public class HTTPUtil {
 
 		/* Create querystring */
 		String querystring = "?";
-		for (String p : parameters) {
+		for (String p : parameters)
+		{
 			querystring = querystring + p + "&";
 		}
 
@@ -72,7 +71,7 @@ public class HTTPUtil {
 		wr.writeBytes(querystring);
 		wr.flush();
 		wr.close();
-		
+
 		System.out.println("\nSending 'POST' request to " + url);
 
 		/* Read the data from the HTTP Request */
@@ -81,7 +80,8 @@ public class HTTPUtil {
 		StringBuffer response = new StringBuffer();
 
 		/* Add lines to response */
-		while ((inputLine = in.readLine()) != null) {
+		while ((inputLine = in.readLine()) != null)
+		{
 			response.append(inputLine);
 		}
 		in.close();

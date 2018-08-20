@@ -6,10 +6,7 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -132,8 +129,6 @@ public class CurrencyList {
 					Currency.getLocaleFromLocaleString("ko_KR"),
 					0.00086,
 					"currency_icon/KRW.png"));
-			currencyList.add(new Currency("XBT", "Bitcoin", Currency.getLocaleFromLocaleString("en_US"), 1001.76,
-					"currency_icon/XBT.png"));
 
 			CurrencyList.this.currencies = currencyList;
 
@@ -202,9 +197,8 @@ public class CurrencyList {
 
 					// Parse JSON
 					FileReader reader = new FileReader(fileAppdataCurrencyList);
-					Object obj = parser.parse(reader);
 
-					JSONObject mainJSON = (JSONObject) obj;
+					JSONObject mainJSON = (JSONObject) parser.parse(reader);
 					JSONArray currencyListJSON = (JSONArray) mainJSON.get("currencies");
 
 					for (Object c : currencyListJSON)

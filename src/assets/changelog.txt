@@ -2,12 +2,19 @@ Currency Converter Changelog
 � George Howarth 2017
 ============================================
 
+Version 1.3 (20-Aug-18)
+--------------------------------------------
+- Currency Converter now updates from a different source, since the old system wasn't working
+- Removed currency support for Bitcoin (XBT)
+
+
 Version 1.2 (11-Nov-17)
 --------------------------------------------
 - Added saves
 - Tweaked layout
 - Fixed some dialogs not opening in the centre of the screen
 - Removed options dialog
+
 
 Version 1.1 (16-Jul-17)
 --------------------------------------------

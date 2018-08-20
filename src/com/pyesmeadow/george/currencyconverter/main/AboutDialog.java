@@ -7,14 +7,14 @@ import com.pyesmeadow.george.currencyconverter.util.ResourceUtil;
 import javax.swing.*;
 import java.awt.*;
 
-public class AboutDialog extends JDialog {
+class AboutDialog extends JDialog {
 
 	private static final long serialVersionUID = 193595101584401663L;
 
 	private static JLabel labelInfo = new JLabel("Currency Converter " + CurrencyConverter.VERSION);
 	private static JLabel labelAuthor = new JLabel("by George Howarth");
 
-	private static JLabel labelCopyright = new JLabel("\u00A9 George Howarth 2017");
+	private static JLabel labelCopyright = new JLabel("\u00A9 George Howarth 2018");
 	private static JLabel labelCopyright2 = new JLabel("All rights reserved");
 
 	private static JLabel labelDataPath = new JLabel("Data path: " + ResourceUtil.getAppdataDirectory());
@@ -55,10 +55,7 @@ public class AboutDialog extends JDialog {
 
 		btnClose.setAlignmentX(CENTER_ALIGNMENT);
 
-		btnClose.addActionListener(evt ->
-		{
-			dispose();
-		});
+		btnClose.addActionListener(evt -> dispose());
 
 		/* Setup frame */
 		registerComponentFontVariations();

@@ -139,14 +139,14 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		fieldFromCurrencyAmount.addKeyListener(this);
 		comboToCurrency.addItemListener(this);
 
-		this.addListeners();
+		addListeners();
 
 		// Set title and icons
 		setTitle("Currency Converter");
 		setIconImages(CurrencyConverter.APP_ICONS);
 
 		// Set frame parameters
-		this.setJMenuBar(this.menuBar);
+		setJMenuBar(this.menuBar);
 
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		updateConversion();
@@ -219,21 +219,11 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 	{
 		return (String) comboFromCurrency.getSelectedItem();
 	}
-/*
-	public Currency getFromCurrency()
-	{
-		return currencyManager.getCurrencyList().getCurrencyFromID(getFromCurrencyID());
-	}*/
 
 	private String getToCurrencyID()
 	{
 		return (String) comboToCurrency.getSelectedItem();
 	}
-/*
-	public Currency getToCurrency()
-	{
-		return currencyManager.getCurrencyList().getCurrencyFromID(getToCurrencyID());
-	}*/
 
 	private void swapCurrencies()
 	{
