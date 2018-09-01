@@ -14,6 +14,10 @@ class AboutDialog extends JDialog {
 	private static JLabel labelInfo = new JLabel("Currency Converter " + CurrencyConverter.VERSION);
 	private static JLabel labelAuthor = new JLabel("by George Howarth");
 
+	private static JLabel labelLogo = new JLabel(new ImageIcon(ResourceUtil.resizeImage(new ImageIcon(CurrencyConverter.LOGO).getImage(),
+			480,
+			270)));
+
 	private static JLabel labelCopyright = new JLabel("\u00A9 George Howarth 2018");
 	private static JLabel labelCopyright2 = new JLabel("All rights reserved");
 
@@ -24,7 +28,6 @@ class AboutDialog extends JDialog {
 
 	AboutDialog()
 	{
-
 		// Panel setup
 		panelNavigation.setLayout(new BoxLayout(panelNavigation, BoxLayout.LINE_AXIS));
 		panelNavigation.add(btnClose);
@@ -37,6 +40,8 @@ class AboutDialog extends JDialog {
 		add(labelInfo);
 		add(labelAuthor);
 		add(Box.createRigidArea(new Dimension(0, 20)));
+		add(labelLogo);
+		add(Box.createRigidArea(new Dimension(0, 20)));
 		add(labelCopyright);
 		add(labelCopyright2);
 		add(Box.createRigidArea(new Dimension(0, 20)));
@@ -47,6 +52,8 @@ class AboutDialog extends JDialog {
 		// Component Setup
 		labelInfo.setAlignmentX(CENTER_ALIGNMENT);
 		labelAuthor.setAlignmentX(CENTER_ALIGNMENT);
+
+		labelLogo.setAlignmentX(CENTER_ALIGNMENT);
 
 		labelCopyright.setAlignmentX(CENTER_ALIGNMENT);
 		labelCopyright2.setAlignmentX(CENTER_ALIGNMENT);
@@ -62,7 +69,8 @@ class AboutDialog extends JDialog {
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 		setTitle("About");
 		setIconImages(CurrencyConverter.APP_ICONS);
-		setSize(580, 300);
+		setSize(540, 580);
+		setResizable(false);
 		setVisible(true);
 		setLocationRelativeTo(null);
 	}

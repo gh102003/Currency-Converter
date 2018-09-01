@@ -17,8 +17,9 @@ import java.util.List;
  */
 public class CurrencyConverter {
 
-	public static final String VERSION = "1.3.0";
+	public static final String VERSION = "1.3.1";
 	public static CurrencyConverterFrame frame;
+
 	// Icons
 	public static Image ADD_ICON;
 	public static Image INFO_ICON;
@@ -27,7 +28,9 @@ public class CurrencyConverter {
 	public static Image EDIT_ICON_HOVER;
 	public static Image REMOVE_ICON;
 	public static Image REMOVE_ICON_HOVER;
+	public static Image LOGO;
 	public static List<Image> APP_ICONS = new ArrayList<>();
+
 	private static FontProfile fontProfile = FontProfile.MEDIUM;
 
 	public static void main(String[] args)
@@ -47,7 +50,7 @@ public class CurrencyConverter {
 
 		for (String arg : args)
 		{
-			if (arg.contains("--disableInitialUpdate"))
+			if (arg.equals("--disableInitialUpdate"))
 			{
 				shouldUpdateOnStart = false;
 			}
@@ -55,18 +58,19 @@ public class CurrencyConverter {
 
 		try
 		{
-			ADD_ICON = ResourceUtil.getImage("assets/add.png");
-			INFO_ICON = ResourceUtil.getImage("assets/info.png");
-			INFO_ICON_HOVER = ResourceUtil.getImage("assets/info_hover.png");
-			EDIT_ICON = ResourceUtil.getImage("assets/edit.png");
-			EDIT_ICON_HOVER = ResourceUtil.getImage("assets/edit_hover.png");
-			REMOVE_ICON = ResourceUtil.getImage("assets/remove.png");
-			REMOVE_ICON_HOVER = ResourceUtil.getImage("assets/remove_hover.png");
+			ADD_ICON = ResourceUtil.getImage("assets/icon/add.png");
+			INFO_ICON = ResourceUtil.getImage("assets/icon/info.png");
+			INFO_ICON_HOVER = ResourceUtil.getImage("assets/icon/info_hover.png");
+			EDIT_ICON = ResourceUtil.getImage("assets/icon/edit.png");
+			EDIT_ICON_HOVER = ResourceUtil.getImage("assets/icon/edit_hover.png");
+			REMOVE_ICON = ResourceUtil.getImage("assets/icon/remove.png");
+			REMOVE_ICON_HOVER = ResourceUtil.getImage("assets/icon/remove_hover.png");
+			LOGO = ResourceUtil.getImage("assets/logo.png");
 
-			Image icon16 = ResourceUtil.getImage("assets/icon_16.png");
-			Image icon32 = ResourceUtil.getImage("assets/icon_32.png");
-			Image icon64 = ResourceUtil.getImage("assets/icon_64.png");
-			Image icon128 = ResourceUtil.getImage("assets/icon_128.png");
+			Image icon16 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_16.png");
+			Image icon32 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_32.png");
+			Image icon64 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_64.png");
+			Image icon128 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_128.png");
 
 			APP_ICONS.add(icon16);
 			APP_ICONS.add(icon32);

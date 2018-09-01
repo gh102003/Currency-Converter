@@ -2,6 +2,13 @@ Currency Converter Changelog
 � George Howarth 2017
 ============================================
 
+Version 1.3.1 (01-Sep-18)
+--------------------------------------------
+- Added a button to view the currency on Wikipedia
+- More information is now displayed about each currency
+-
+
+
 Version 1.3 (20-Aug-18)
 --------------------------------------------
 - Currency Converter now updates from a different source, since the old system wasn't working
@@ -61,7 +68,7 @@ Version 0.5.1-alpha (05-Feb-17)
 - Tweaked positioning of font size controls in 'Options' dialog
 - Tweaked font sizes
 - Tweaked some dialog sizes
-- You can now only open one Currency Updater at a time to prevent errors
+- You can now only open one Currency Updater at a time, to prevent errors
 
 
 Version 0.5.0-alpha (04-Feb-17)

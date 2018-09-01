@@ -58,15 +58,20 @@ public class ResourceUtil {
 	 */
 	public static void openAbsoluteFile(URI uri)
 	{
-		Desktop desktop = Desktop.getDesktop();
-
-		try
+		if (Desktop.isDesktopSupported())
 		{
-			desktop.browse(uri);
+			try
+			{
+				Desktop.getDesktop().browse(uri);
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
 		}
-		catch (IOException e)
+		else
 		{
-			e.printStackTrace();
+			throw new UnsupportedOperationException("Desktop is not supported, could not open URI \"" + uri.toString() + "\"");
 		}
 	}
 

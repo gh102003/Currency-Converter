@@ -55,13 +55,6 @@
 			"locale": "ko_KR",
 			"valueInUSD": 0.00086,
 			"iconPath": "currency_icon/KRW.png"
-		},
-		{
-			"id": "XBT",
-			"name": "Bitcoin",
-			"locale": "en_US",
-			"valueInUSD": 1001.76,
-			"iconPath": "currency_icon/XBT.png"
 		}
 	]
 }

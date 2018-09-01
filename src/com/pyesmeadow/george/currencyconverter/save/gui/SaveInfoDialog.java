@@ -52,9 +52,8 @@ class SaveInfoDialog extends JDialog {
 		registerComponentFontVariations();
 		FontUtil.updateComponentFontVariations(CurrencyConverter.getFontProfile(), false);
 
-		setSize(new Dimension(450, 250));
-		setMinimumSize(new Dimension(450, 250));
-		setMaximumSize(new Dimension(450, 250));
+		setSize(new Dimension(450, 260));
+		setResizable(false);
 		setIconImages(CurrencyConverter.APP_ICONS);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 		setTitle("Save info");
@@ -66,7 +65,7 @@ class SaveInfoDialog extends JDialog {
 
 	protected void registerComponentFontVariations()
 	{
-		FontUtil.registerComponentFontVariation(labelFromAmount, FontUtil.FontVariation.SMALL_SYMBOL);
-		FontUtil.registerComponentFontVariation(labelToAmount, FontUtil.FontVariation.SMALL_SYMBOL);
+		FontUtil.registerComponentFontVariation(labelFromAmount, FontUtil.FontVariation.MEDIUM_SYMBOL);
+		FontUtil.registerComponentFontVariation(labelToAmount, FontUtil.FontVariation.MEDIUM_SYMBOL);
 	}
 }
