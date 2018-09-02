@@ -29,6 +29,8 @@ public class CurrencyConverter {
 	public static Image REMOVE_ICON;
 	public static Image REMOVE_ICON_HOVER;
 	public static Image LOGO;
+
+	public static final int APP_ICON_VERSION = 3;
 	public static List<Image> APP_ICONS = new ArrayList<>();
 
 	private static FontProfile fontProfile = FontProfile.MEDIUM;
@@ -67,18 +69,21 @@ public class CurrencyConverter {
 			REMOVE_ICON_HOVER = ResourceUtil.getImage("assets/icon/remove_hover.png");
 			LOGO = ResourceUtil.getImage("assets/logo.png");
 
-			Image icon16 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_16.png");
-			Image icon32 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_32.png");
-			Image icon64 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_64.png");
-			Image icon128 = ResourceUtil.getImage("assets/icon/app_icon/v2/icon_128.png");
+			Image icon16 = ResourceUtil.getImage("assets/icon/app_icon/v" + APP_ICON_VERSION + "/icon_16.png");
+			Image icon32 = ResourceUtil.getImage("assets/icon/app_icon/v" + APP_ICON_VERSION + "/icon_32.png");
+			Image icon64 = ResourceUtil.getImage("assets/icon/app_icon/v" + APP_ICON_VERSION + "/icon_64.png");
+			Image icon128 = ResourceUtil.getImage("assets/icon/app_icon/v" + APP_ICON_VERSION + "/icon_128.png");
+			Image icon256 = ResourceUtil.getImage("assets/icon/app_icon/v" + APP_ICON_VERSION + "/icon_256.png");
 
 			APP_ICONS.add(icon16);
 			APP_ICONS.add(icon32);
 			APP_ICONS.add(icon64);
 			APP_ICONS.add(icon128);
+			APP_ICONS.add(icon256);
 		}
 		catch (FileNotFoundException e)
 		{
+			System.err.println("Error loading icons");
 			e.printStackTrace();
 		}
 

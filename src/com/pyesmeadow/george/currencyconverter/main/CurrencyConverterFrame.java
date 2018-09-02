@@ -156,17 +156,17 @@ public class CurrencyConverterFrame extends JFrame implements KeyListener, ItemL
 		setVisible(true);
 	}
 
-	public List<IToggleableComponent> getToggleableComponentsWithPredicate(Predicate<IToggleableComponent> predicate)
+	List<IToggleableComponent> getToggleableComponentsWithPredicate(Predicate<IToggleableComponent> predicate)
 	{
 		return toggleableComponents.stream().filter(predicate).collect(Collectors.toList());
 	}
 
-	public List<IToggleableComponent> getToggleableComponentsByID(String id)
+	List<IToggleableComponent> getToggleableComponentsByID(String id)
 	{
 		return getToggleableComponentsWithPredicate(component -> component.getID().equals(id));
 	}
 
-	public List<IToggleableComponent> getToggleableComponents()
+	private List<IToggleableComponent> getToggleableComponents()
 	{
 		return toggleableComponents;
 	}

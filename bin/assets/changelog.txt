@@ -6,7 +6,8 @@ Version 1.3.1 (01-Sep-18)
 --------------------------------------------
 - Added a button to view the currency on Wikipedia
 - More information is now displayed about each currency
--
+- The about dialog now shows the new logo for Currency Converter
+- Reorganised internal icon files
 
 
 Version 1.3 (20-Aug-18)
