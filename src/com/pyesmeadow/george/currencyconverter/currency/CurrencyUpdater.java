@@ -111,7 +111,7 @@ public class CurrencyUpdater extends JDialog implements Runnable {
 			String updateData = HTTPUtil.sendGetRequest(url).toString(); // JSON file
 
 			// Parse currency data
-			var parser = new JSONParser();
+			JSONParser parser = new JSONParser();
 			JSONObject updateJSON = (JSONObject) parser.parse(updateData);
 			Object valueFromData = updateJSON.get(currency.getIdentifier() + "_USD");
 

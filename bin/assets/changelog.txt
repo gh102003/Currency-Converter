@@ -2,11 +2,17 @@ Currency Converter Changelog
 � George Howarth 2017
 ============================================
 
+Version 1.3.2 (20-Jan-19)
+--------------------------------------------
+- Reduce minimum Java version to 8
+
+
 Version 1.3.1 (01-Sep-18)
 --------------------------------------------
 - Added a button to view the currency on Wikipedia
 - More information is now displayed about each currency
-- The about dialog now shows the new logo for Currency Converter
+- Currency Converter has a new icon and logo
+- The about dialog now shows the new logo
 - Reorganised internal icon files
 
 

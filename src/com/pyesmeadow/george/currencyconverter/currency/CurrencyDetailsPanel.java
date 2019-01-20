@@ -80,7 +80,7 @@ public class CurrencyDetailsPanel extends JPanel {
 	{
 		FontUtil.registerComponentFontVariation(labelCurrencyName, FontUtil.FontVariation.SMALL_BOLD);
 		FontUtil.registerComponentFontVariation(labelCurrencyValue, FontUtil.FontVariation.SMALL_PLAIN);
-		FontUtil.registerComponentFontVariation(labelCurrencyValueInverse, FontUtil.FontVariation.SMALL_PLAIN);
+		FontUtil.registerComponentFontVariation(labelCurrencyValueInverse, FontUtil.FontVariation.SMALL_SYMBOL);
 		FontUtil.registerComponentFontVariation(btnWikipedia, FontUtil.FontVariation.SMALL_PLAIN);
 	}
 }
